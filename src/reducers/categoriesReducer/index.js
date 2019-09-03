@@ -1,6 +1,7 @@
 import {
     GET_CATEGORIES_SUCCCES, GET_CATEGORIES_FAILURE,
     ADD_CATEGORIE_SUCCES, ADD_CATEGORIE_FAILURE,
+    EDIT_CATEGORIE_SUCCES, EDIT_CATEGORIE_FAILURE,
     DELETE_CATEGORIE_SUCCES, DELETE_CATEGORIE_FAILURE
 } from '../../actionType'
 
@@ -28,6 +29,10 @@ const toastError = () => {
   });  
 }
 
+const reloadPage = () => {
+  setTimeout(window.location.reload(), 6000)
+}
+
 const initialState = {
     categories: [],
     isFetching: false,
@@ -46,13 +51,23 @@ function categoriesReducer(state = initialState, action) {
 
       case ADD_CATEGORIE_SUCCES:
           toastSucces()
+          reloadPage()
         return { ...state, status: action.payload }
       case ADD_CATEGORIE_FAILURE:
           toastError()
         return { ...state, error: action.payload.message, status: action.payload }
 
+      case EDIT_CATEGORIE_SUCCES:
+          toastSucces()
+          reloadPage()
+        return { ...state, status: action.payload }
+      case EDIT_CATEGORIE_FAILURE:
+          toastError()
+        return { ...state, error: action.payload.message, status: action.payload }
+
       case DELETE_CATEGORIE_SUCCES:
           toastSucces()
+          reloadPage()
         return { ...state, status: action.payload }
       case DELETE_CATEGORIE_FAILURE:
           toastError()

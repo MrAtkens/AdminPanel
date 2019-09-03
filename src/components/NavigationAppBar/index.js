@@ -127,25 +127,33 @@ function NavigationAppBar() {
         <List>
           <Link color="inherit" to="/categorie">
             <ListItem button>
-              <ListItemIcon> <CategoryIcon /> </ListItemIcon>
+              <ListItemIcon> 
+                <CategoryIcon />
+              </ListItemIcon>
               <ListItemText primary={"Category"} ></ListItemText>
             </ListItem>
           </Link>
           <Link color="inherit" to="/product">
             <ListItem button>
-              <ListItemIcon> <MonetizationOnIcon /> </ListItemIcon>
+              <ListItemIcon>
+                <MonetizationOnIcon /> 
+              </ListItemIcon>
               <ListItemText primary={"Product"} />
             </ListItem>
           </Link>
           <Link color="inherit" to="/mail">
             <ListItem button>
-              <ListItemIcon> <MailIcon /> </ListItemIcon>
+              <ListItemIcon> 
+                <MailIcon /> 
+              </ListItemIcon>
               <ListItemText primary={"Mail"} />
             </ListItem>
           </Link>
-          <Link color="inherit" to="/accounts">
+          <Link color="inherit" to="/users">
             <ListItem button>
-              <ListItemIcon> <AccountCircleIcon /> </ListItemIcon>
+              <ListItemIcon> 
+                <AccountCircleIcon /> 
+              </ListItemIcon>
               <ListItemText primary={"Accounts"} />
             </ListItem>
           </Link>

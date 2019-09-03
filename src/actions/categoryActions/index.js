@@ -1,6 +1,7 @@
-import { fetchCategoriesApi, addCategorieApi, deleteCategorieApi } from '../../API'
+import { fetchCategoriesApi, addCategorieApi, editCategorieApi, deleteCategorieApi } from '../../API'
 import {GET_CATEGORIES_START, GET_CATEGORIES_SUCCCES, GET_CATEGORIES_FAILURE,
   ADD_CATEGORIE_START,ADD_CATEGORIE_SUCCES, ADD_CATEGORIE_FAILURE,
+  EDIT_CATEGORIE_START, EDIT_CATEGORIE_SUCCES, EDIT_CATEGORIE_FAILURE,
   DELETE_CATEGORIE_START, DELETE_CATEGORIE_SUCCES, DELETE_CATEGORIE_FAILURE} from '../../actionType'
 
 export const fetchCategories = () => async dispatch => {
@@ -8,7 +9,7 @@ export const fetchCategories = () => async dispatch => {
 
   try {
     const categories = await fetchCategoriesApi()
-    console.log("ACTION:"+categories)
+    console.log("ACTION: "+categories)
   
     dispatch({
       type: GET_CATEGORIES_SUCCCES,
@@ -28,7 +29,7 @@ export const addCategorie = (categorie) => async dispatch => {
 
   try {
     const status = await addCategorieApi(categorie)
-    console.log("ACTION:"+status)
+    console.log("ACTION: "+status)
   
     dispatch({
       type: ADD_CATEGORIE_SUCCES,
@@ -42,12 +43,31 @@ export const addCategorie = (categorie) => async dispatch => {
 }
 }
 
+export const editCategorie = (id, newData) => async dispatch => {
+  dispatch({type: EDIT_CATEGORIE_START})
+
+  try {
+    const status = await editCategorieApi(id, newData)
+    console.log("ACTION: "+status)
+  
+    dispatch({
+      type: EDIT_CATEGORIE_SUCCES,
+      payload: status
+    })
+  } catch (err) {
+    dispatch({
+      type: EDIT_CATEGORIE_FAILURE,
+      payload: false,
+    })
+}
+}
+
 export const deleteCategorie = (id) => async dispatch => {
   dispatch({type: DELETE_CATEGORIE_START})
 
   try {
     const status = await deleteCategorieApi(id)
-    console.log("ACTION:"+status.status)
+    console.log("ACTION: "+status.status)
   
     dispatch({
       type: DELETE_CATEGORIE_SUCCES,

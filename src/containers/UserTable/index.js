@@ -5,33 +5,32 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import MaterialTable from 'material-table';
 
-import { fetchCategories, addCategorie, editCategorie, deleteCategorie } from '../../actions'
-
+import { fetchUsers, deleteSelectedUsers } from '../../actions'
  
-class CategorieTable extends Component {
-
-  state={
-    categories: this.props.categories
-  }
+class UserTable extends Component {
 
   componentDidMount(){
-      this.props.fetchCategories()
+      this.props.fetchUsers()
   }
 
   render(){
     return(
    <div>
     <MaterialTable
-        title="Таблица Категорий"
+        title="Таблица Пользователя"
         columns={[
-          { title: 'Индекс категорий', field: '_id', editable: 'never' },
-          { title: 'Категория', field: 'name' },
-          { title: 'Номер категорий', field: 'idCategorie', type: 'numeric' },
+          { title: 'Индекс пользователя', field: '_id', editable: 'never' },
+          { title: 'Имя', field: 'name' },
+          { title: 'Логин', field: 'login' },
+          { title: 'Email', field: 'email' },
+          { title: 'Телефон', field: 'phone' },
+          { title: 'Город', field: 'city' }
         ]}
-        data={this.props.categories}
+        data={this.props.users}
         options={{
           exportButton: true,
           actionsColumnIndex: -1,
+          selection: true
         }}
         localization={{
           pagination: {
@@ -73,23 +72,13 @@ class CategorieTable extends Component {
 
           }
       }}
-        editable={{
-          onRowAdd: newData =>
-            new Promise(resolve => {
-              resolve();
-              this.props.addCategorie(newData)  
-            }),
-          onRowUpdate: (newData, oldData) =>
-            new Promise(resolve => {
-              resolve();
-              this.props.editCategorie(oldData._id, newData) 
-            }),
-          onRowDelete: (oldData) =>
-            new Promise(resolve => {
-              resolve();
-              this.props.deleteCategorie(oldData._id) 
-            })
-        }}
+      actions={[
+        {
+            tooltip: 'Удалить всех выбранных пользователей',
+            icon: 'delete',
+            onClick: (evt, ids) => this.props.deleteSelectedUsers(ids)
+        }
+      ]}
       />
         <ToastContainer
               position={'bottom-left'}
@@ -108,17 +97,15 @@ class CategorieTable extends Component {
 
 const mapStateToProps = store => {
     return {
-        categories: store.categoriesReducer.categories
+      users: store.usersReducer.users
     }
   }
 
 const mapDispatchToProps = {
-    fetchCategories,
-    addCategorie,
-    editCategorie,
-    deleteCategorie
+    fetchUsers,
+    deleteSelectedUsers
 }
 
   export default connect(
     mapStateToProps, mapDispatchToProps
-  )(CategorieTable)
+  )(UserTable)
