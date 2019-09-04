@@ -35,7 +35,6 @@ const useStyles = makeStyles(theme => ({
     }),
   },
   bigAvatar: {
-    marginRight: 35,
     width: 60,
     height: 60,
   },
@@ -133,7 +132,7 @@ function NavigationAppBar() {
               <ListItemText primary={"Category"} ></ListItemText>
             </ListItem>
           </Link>
-          <Link color="inherit" to="/product">
+          <Link color="inherit" to="/products">
             <ListItem button>
               <ListItemIcon>
                 <MonetizationOnIcon /> 

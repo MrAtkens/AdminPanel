@@ -51,7 +51,7 @@ class MailTable extends Component {
   }
 
   componentDidMount(){
-      this.props.fetchMails()
+      this.props.fetchMails() 
   }
 
   render(){

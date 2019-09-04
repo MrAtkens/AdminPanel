@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import { UserTable } from '../../containers'
+import { ProductTable } from '../../containers'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -37,22 +37,22 @@ const useStyles = makeStyles(theme => ({
    
   }));
   
-function UserGrid() {
+function ProductsGrid() {
     const classes = useStyles();
     const [open] = React.useState(false);
   
     return (
-    <div className={classes.root}>
+        <div className={classes.root}>
       <CssBaseline />
       <main
         className={clsx(classes.content, {
           [classes.contentShift]: open,
         })}>
        <div className={classes.drawerHeader} />
-          <UserTable />
+          <ProductTable />
        </main>
     </div>
     );
   }
 
-  export default UserGrid
+  export default ProductsGrid

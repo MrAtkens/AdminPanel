@@ -1,12 +1,6 @@
-import { MainGrid, CategorieGrid, MailGrid, UserGrid } from './views'
+import { CategorieGrid, ProductsGrid, MailGrid, UserGrid } from './views'
 
 const dashboardRoutes = [
-    {
-        path: "main",
-        layout: "/",
-        name: "MainPage",
-        component: MainGrid
-    },
     {
         path: "categorie",
         layout: "/",
@@ -24,6 +18,12 @@ const dashboardRoutes = [
         layout: "/",
         name: "Users",
         component: UserGrid
+    },
+    {
+        path: "products",
+        layout: "/",
+        name: "Products",
+        component: ProductsGrid
     }
   ];
   
