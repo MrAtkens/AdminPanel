@@ -1,22 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import Avatar from '@material-ui/core/Avatar';
 import {Link} from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
+import {Badge, Drawer, CssBaseline, AppBar, Toolbar, Typography, Divider, List,
+IconButton, ListItem, ListItemIcon, ListItemText, Avatar} from '@material-ui/core';
+import PaymentIcon from '@material-ui/icons/Payment';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import CategoryIcon from '@material-ui/icons/Category';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
@@ -33,6 +25,7 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    backgroundColor: "#ff1313"
   },
   bigAvatar: {
     width: 60,
@@ -48,6 +41,7 @@ const useStyles = makeStyles(theme => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
+    color: "white"
   },
   hide: {
     display: 'none',
@@ -67,9 +61,27 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-end',
   },
 
+  linkH5: {
+    textDecoration: 'none',
+    color: 'white'
+  },
+  linkList:{
+    textDecoration: 'none',
+    color: '#1f1f1f',
+    "&:hover": {
+      color: '#ff1313'
+    }
+  },
+  listIcon:{
+    color: '#757575',
+    "&:hover":{
+      color: '#ff1313'
+    }
+  }
+
 }));
 
-function NavigationAppBar() {
+const NavigationAppBar = (props) =>{
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -92,19 +104,20 @@ function NavigationAppBar() {
         })}
       >
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
+          <IconButton    
+            aria-label="Открыть меню"
             onClick={handleDrawerOpen}
             edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
-          >
+            className={clsx(classes.menuButton, open && classes.hide)}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
-            Kumdang-2
-          </Typography>
+            <Typography variant="h5" noWrap>
+              <Link className={classes.linkH5} to="/main">
+                Kumdang-2
+              </Link>
+            </Typography>
         </Toolbar>
+
       </AppBar>
       <Drawer
         className={classes.drawer}
@@ -116,44 +129,54 @@ function NavigationAppBar() {
         }}
       >
         <div className={classes.drawerHeader}>
-          <Avatar alt="Remy Sharp" src={'assets/avatar/logo.png'} className={classes.bigAvatar} />
-          <Typography variant="h6" noWrap>Kumdang-2</Typography>
+          <Link to="/main"><Avatar alt="kumdang-2" src={'assets/avatar/logo.png'} className={classes.bigAvatar} /></Link>
+          <Link className={classes.linkList} to="/main"><Typography variant="h6" noWrap>Kumdang-2</Typography></Link>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </div>
         <Divider />
         <List>
-          <Link color="inherit" to="/categorie">
+          <Link className={classes.linkList} to="/categorie"> 
             <ListItem button>
               <ListItemIcon> 
-                <CategoryIcon />
+                <CategoryIcon className={classes.listIcon} />
               </ListItemIcon>
               <ListItemText primary={"Category"} ></ListItemText>
             </ListItem>
           </Link>
-          <Link color="inherit" to="/products">
+          <Link className={classes.linkList} to="/products">
             <ListItem button>
               <ListItemIcon>
-                <MonetizationOnIcon /> 
+                <MonetizationOnIcon className={classes.listIcon} /> 
               </ListItemIcon>
               <ListItemText primary={"Product"} />
             </ListItem>
           </Link>
-          <Link color="inherit" to="/mail">
+          <Link className={classes.linkList} to="/mail">
             <ListItem button>
               <ListItemIcon> 
-                <MailIcon /> 
+              <Badge className={classes.margin} badgeContent={props.mails.length} color="secondary">
+                <MailIcon className={classes.listIcon} />
+              </Badge> 
               </ListItemIcon>
               <ListItemText primary={"Mail"} />
             </ListItem>
           </Link>
-          <Link color="inherit" to="/users">
+          <Link className={classes.linkList} to="/users">
             <ListItem button>
               <ListItemIcon> 
-                <AccountCircleIcon /> 
+                <AccountCircleIcon className={classes.listIcon} /> 
               </ListItemIcon>
               <ListItemText primary={"Accounts"} />
+            </ListItem>
+          </Link>
+          <Link className={classes.linkList} to="/orders">
+            <ListItem button>
+              <ListItemIcon> 
+                <PaymentIcon className={classes.listIcon} /> 
+              </ListItemIcon>
+              <ListItemText primary={"Orders"} />
             </ListItem>
           </Link>
         </List>
@@ -161,5 +184,9 @@ function NavigationAppBar() {
      </div>
   );
 }
+
+NavigationAppBar.propTypes = {
+  mailsCount: PropTypes.number
+};
 
 export default NavigationAppBar

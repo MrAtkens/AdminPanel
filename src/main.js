@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import { NavigationAppBar } from './components'
 
@@ -29,11 +30,19 @@ class Main extends Component{
     render(){
         return(
           <div>
-            <NavigationAppBar />
+            <NavigationAppBar mails={this.props.mails}/>
                 <div>{switchRoutes}</div>         
           </div>
         );
     }
 }
 
-export default Main
+const mapStateToProps = store => {
+  return {
+      mails: store.mailsRedurcer.mails
+  }
+}
+
+export default connect(
+  mapStateToProps, null
+)(Main)

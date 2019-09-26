@@ -1,0 +1,40 @@
+img{
+    max-width: max-content;
+}
+
+/* TextFields classes */
+.text-editor{
+    padding: 16px 0px
+}
+
+.price-field{  
+    margin-right: 3% !important
+}
+
+/* Full description editor class */
+.editor-class{
+    border: 1px solid #F1F1F1;
+    padding: 0 10px 0 10px
+}
+
+.superFancyBlockquote {
+    color: #999;
+    font-family: 'Hoefler Text', Georgia, serif;
+    font-style: italic;
+    text-align: center;
+}
+
+/* Image uploader classes */
+
+.block-uploader{
+    display: inline-flex;
+}
+@media only screen and (max-width: 600px) {
+    .block-uploader{
+        display: inline-block;
+    }
+}
+
+.image-uploader{
+    text-align: center;
+}

@@ -7,7 +7,6 @@ export const fetchMails = () => async dispatch => {
 
   try {
     const mails = await fetchMailsApi()
-    console.log("ACTION: "+mails)
   
     dispatch({
       type: GET_MAIL_SUCCES,
@@ -28,7 +27,6 @@ export const deleteSelectedMails = (ids) => async dispatch => {
   try{
     console.log(ids)
     const mails = await deleteSelectedMailsApi(ids)
-    console.log("ACTION: "+mails)
   
     dispatch({
       type: DELETE_MAIL_SUCCES,

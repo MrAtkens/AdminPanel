@@ -1,30 +1,157 @@
-import React,{Component} from 'react'
-import { connect } from 'react-redux'
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import MaterialTable from 'material-table';
+import ChipInput from 'material-ui-chip-input';
+import CancelIcon from '@material-ui/icons/Cancel';
+import htmlToDraft from 'html-to-draftjs';
+import draftToHtml from 'draftjs-to-html';
+import ImagesUploader from 'react-images-uploader';
+import 'react-images-uploader/styles.css';
+import 'react-images-uploader/font.css';
+import { Button, Dialog, DialogActions, DialogTitle, IconButton, TextField, DialogContent, InputAdornment, MenuItem, Grid } from '@material-ui/core';
+import { ToastContainer } from 'react-toastify';
+import { EditorState, ContentState, convertToRaw } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-toastify/dist/ReactToastify.css';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import './style.css';
 
-import { fetchProducts, deleteProduct } from '../../actions'
- 
+import { fetchProducts, addProduct, editProduct, deleteProduct } from '../../actions'
+import avaibleList from './avaibilityList'
+
+const URL = 'http://localhost:3444/notmultiple'
+
 class ProductTable extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+        isEditOpen: false,
+        isAddOpen: false,
+        product: {},
+        editorState: null
+    };
+
+    this.handleIsAddOpen = this.handleIsAddOpen.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
+
+    this.handleIsEditOpen = this.handleIsEditOpen.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+  }
+
+  change = e => {
+    this.setState({product:{
+      ...this.state.product,
+      [e.target.name]: e.target.value}
+    });
+  };
+
+  onEditorStateChange: Function = (editorState) => {
+    this.setState({
+      editorState,
+    });
+  }
+
+
+  handleIsEditOpen(data) {
+    if(this.state.isEditOpen === false){
+      this.setState({ isEditOpen: true })
+      this.setState({ product: data })
+      const contentBlock = htmlToDraft(data.fullDescription);
+      if (contentBlock) {
+        const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+        const data = EditorState.createWithContent(contentState);
+        this.setState({editorState: data})
+      }
+    }
+    else{
+      this.setState({ product: {} })
+      this.setState({ isEditOpen: false })
+    }
+  }
+
+  handleIsAddOpen() {
+    if(this.state.isAddOpen === false){
+      this.setState({ isAddOpen: true })
+      this.setState({ product: {
+        mainImage: {
+          zoomImage: '1.jpg',
+          image: '1.jpg',
+          smallImage: '1.jpg',
+          cartImage: '1.jpg',
+          alt: ''
+        },
+        _id: '',
+        name: '',
+        description: '',
+        fullDescription: '',
+        price: 0,
+        stockPrice: 0,
+        isAvaible: '',
+        categories: []
+      }})
+      const contentState = EditorState.createEmpty()
+      this.setState({editorState: contentState})
+    }
+    else
+      this.setState({ isAddOpen: false })
+  }
+
+  handleEdit(){
+    const rawContentState = convertToRaw(this.state.editorState.getCurrentContent());
+    const markup = draftToHtml(rawContentState);
+    const product = this.state.product
+    product.fullDescription = markup
+
+    this.props.editProduct(this.state.product._id, product)
+  }
+
+  handleAdd(){
+    const rawContentState = convertToRaw(this.state.editorState.getCurrentContent());
+    const markup = draftToHtml(rawContentState);
+    const product = this.state.product
+    product.fullDescription = markup
+
+    this.props.addProduct(product)
+  }
+  
+  handleAddChip(chip){
+    const data = this.state.product.categories
+    data.push(chip)
+    this.setState({product:{
+      ...this.state.product,
+      categories: data}
+    });  
+  }
+
+  handleDeleteChip(chip, index){
+    const data = this.state.product.categories
+    data.splice(index, 1)
+    this.setState({product:{
+      ...this.state.product,
+      categories: data}
+    }); 
+  }
 
   componentDidMount(){
       this.props.fetchProducts()
   }
 
   render(){
+    const { editorState, product } = this.state;
     return(
    <div>
     <MaterialTable
         title="Таблица Продуктов"
         columns={[
-          { title: 'Avatar', field: 'mainImage', render: rowData => <img src={rowData.mainImage.image} style={{width: 100, borderRadius: '50%'}}/> },
+          { title: 'Картинка', field: 'mainImage', render: rowData => <img src={rowData.mainImage.image} alt={rowData.mainImage.alt} style={{width: 100}}/> },
           { title: 'Индекс продукта', field: '_id', editable: 'never' },
           { title: 'Имя', field: 'name' },
           { title: 'Цена', field: 'price' },
           { title: 'Скидочна цена', field: 'stockPrice' },
           { title: 'Наличия', field: 'isAvaible' },
+          { title: 'Кол/Купленных', field: 'count'}
         ]}
         data={this.props.products}
         options={{
@@ -38,7 +165,7 @@ class ProductTable extends Component {
                 return (
                   <div
                     style={{
-                      fontSize: 24,
+                      fontSize: 16,
                       marginLeft: 20,
                       textAlign: "center",
                       color: 'black' }}>
@@ -87,17 +214,20 @@ class ProductTable extends Component {
 
           }
       }}
+      actions={[
+        {
+          icon: 'edit',
+          tooltip: 'Изменить',
+          onClick: (event, rowData) => this.handleIsEditOpen(rowData)
+        },
+        {
+          icon: 'add',
+          tooltip: 'Добавить товар',
+          isFreeAction: true,
+          onClick: (event) => this.handleIsAddOpen()
+        }
+      ]}
       editable={{
-        onRowAdd: newData =>
-          new Promise(resolve => {
-            resolve();
-            this.props.addCategorie(newData)  
-          }),
-        onRowUpdate: (newData, oldData) =>
-          new Promise(resolve => {
-            resolve();
-            this.props.editCategorie(oldData._id, newData) 
-          }),
         onRowDelete: (oldData) =>
           new Promise(resolve => {
             resolve();
@@ -105,7 +235,222 @@ class ProductTable extends Component {
           })
       }}
       />
-        <ToastContainer
+
+      {/* Dialogs and Toasts  */}
+      {this.state.isEditOpen ? <Dialog open={this.state.isEditOpen} onClose={this.handleIsEditOpen} aria-labelledby="editor-dialog-title" fullScreen={true}>
+        <DialogTitle>
+          <IconButton    
+            aria-label="Закрыть"
+            onClick={this.handleIsEditOpen}
+            className="buttonCancel"
+            edge="start">
+            <CancelIcon />
+          </IconButton>
+          <TextField name="name" label="Название" variant="outlined"  margin="normal"
+          fullWidth
+          value={product.name}
+          onChange={e => this.change(e)}/>
+        </DialogTitle>
+        <DialogContent>
+          <Grid>
+            <TextField name="price" label="Цена в тг" className="price-field" variant="outlined" margin="normal"
+            onChange={e => this.change(e)}
+            type="number"
+            value={product.price}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">тг</InputAdornment>,
+            }}/>
+            <TextField name="stockPrice" label="Скидка в тг" variant="outlined" margin="normal" className="price-field"
+            onChange={e => this.change(e)}
+            type="number"
+            value={product.stockPrice}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">тг</InputAdornment>,
+            }}/>
+            <TextField select className="price-field" variant="outlined" label="Наличие" margin="normal"
+            name="isAvaible"
+            value={product.isAvaible}
+            onChange={e => this.change(e)}>
+            {avaibleList.map(option => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+            </TextField>
+          </Grid>
+            <ChipInput value={product.categories} fullWidth label='Категорий' name="categories"
+            onAdd={(chip) => this.handleAddChip(chip)}
+            onDelete={(chip, index) => this.handleDeleteChip(chip, index)}
+            placeholder='Напишите категорию и нажмите на enter'/>
+            <TextField name="description" label="Описание" multiline variant="outlined" margin="normal"
+            rows="5"
+            onChange={e => this.change(e)}
+            fullWidth
+            value={product.description}/>
+          <Grid className="text-editor">
+            <Editor
+              editorState={editorState}
+              editorClassName="editor-class"
+              onEditorStateChange={this.onEditorStateChange}/>
+          </Grid>
+          <TextField name="alt" label="Имя картинки" fullWidth variant="outlined" margin="normal"
+            onChange={e => {
+              this.setState({product:{...this.state.product, mainImage:{...this.state.product.mainImage, alt: e.target.value}}}); 
+            }}
+            value={product.mainImage.alt}/>
+          <Grid className="block-uploader" container spacing={3}>
+            <Grid className="image-uploader" item xs={3}>
+              <ImagesUploader url={URL} optimisticPreviews multiple={false}
+                image={this.state.product.mainImage.zoomImage}
+                onLoadEnd={(err, data) => {
+                  this.setState({product:{...this.state.product, mainImage:{...this.state.product.mainImage, zoomImage: data}}}); 
+                }}
+                label="Загрузка увеличенной картинки 1280x1280"/>
+            </Grid>
+            <Grid className="image-uploader" item xs={3}>
+              <ImagesUploader url={URL} optimisticPreviews multiple={false}
+                image={this.state.product.mainImage.image}
+                className="image-uploader"
+                onLoadEnd={(err, data) => {
+                  this.setState({product:{...this.state.product, mainImage:{...this.state.product.mainImage, image: data}}}); 
+                }}
+                label="Загрузка подробной картинки 570x570"/>
+            </Grid>
+            <Grid className="image-uploader" item xs={3}>
+              <ImagesUploader url={URL} optimisticPreviews multiple={false}
+                image={this.state.product.mainImage.smallImage}
+                className="image-uploader"
+                onLoadEnd={(err, data) => {
+                  this.setState({product:{...this.state.product, mainImage:{...this.state.product.mainImage, smallImage: data}}}); 
+                }}
+                label="Загрузка витринной картинки 324x324"/>
+            </Grid>
+            <Grid className="image-uploader" item xs={3}>
+              <ImagesUploader url={URL} optimisticPreviews multiple={false}
+                image={this.state.product.mainImage.cartImage}
+                className="image-uploader"
+                onLoadEnd={(err, data) => {
+                  this.setState({product:{...this.state.product, mainImage:{...this.state.product.mainImage, cartImage: data}}}); 
+                }}
+                label="Загрузка корзинной картинки 82x82"/>
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.handleIsEditOpen} color="primary">
+            Отменить
+          </Button>
+          <Button onClick={this.handleEdit} color="primary">
+            Сохранить
+          </Button>
+        </DialogActions>
+      </Dialog> : null}     
+      {/* Add Dialog */}
+      {this.state.isAddOpen ? <Dialog open={this.state.isAddOpen} onClose={this.handleIsAddOpen} aria-labelledby="editor-dialog-title" fullScreen={true}>
+        <DialogTitle>
+          <IconButton    
+            aria-label="Закрыть"
+            onClick={this.handleIsAddOpen}
+            className="buttonCancel"
+            edge="start">
+            <CancelIcon />
+          </IconButton>
+          <TextField name="name" label="Название" variant="outlined"  margin="normal"
+          fullWidth
+          value={product.name}
+          onChange={e => this.change(e)}/>
+        </DialogTitle>
+        <DialogContent>
+          <Grid>
+            <TextField name="price" label="Цена в тг" className="price-field" variant="outlined" margin="normal"
+            onChange={e => this.change(e)}
+            type="number"
+            value={product.price}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">тг</InputAdornment>,
+            }}/>
+            <TextField name="stockPrice" label="Скидка в тг" variant="outlined" margin="normal" className="price-field"
+            onChange={e => this.change(e)}
+            type="number"
+            value={product.stockPrice}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">тг</InputAdornment>,
+            }}/>
+            <TextField select className="price-field" variant="outlined" label="Наличие" margin="normal"
+            name="isAvaible"
+            value={product.isAvaible}
+            onChange={e => this.change(e)}>
+            {avaibleList.map(option => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+            </TextField>
+          </Grid>
+            <ChipInput value={product.categories} fullWidth label='Категорий' name="categories"
+            onAdd={(chip) => this.handleAddChip(chip)}
+            onDelete={(chip, index) => this.handleDeleteChip(chip, index)}
+            placeholder='Напишите категорию и нажмите на enter'/>
+            <TextField name="description" label="Описание" multiline variant="outlined" margin="normal"
+            rows="5"
+            onChange={e => this.change(e)}
+            fullWidth
+            value={product.description}/>
+          <Grid className="text-editor">
+            <Editor
+              editorState={editorState}
+              editorClassName="editor-class"
+              onEditorStateChange={this.onEditorStateChange}/>
+          </Grid>
+          <TextField name="alt" label="Имя картинки" fullWidth variant="outlined" margin="normal"
+            onChange={e => {
+              this.setState({product:{...this.state.product, mainImage:{...this.state.product.mainImage, alt: e.target.value}}}); 
+            }}
+            value={product.mainImage.alt}/>
+          <Grid className="block-uploader" container spacing={3}>
+            <Grid className="image-uploader" item xs={3}>
+              <ImagesUploader url={URL} optimisticPreviews multiple={false}
+                onLoadEnd={(err, data) => {
+                  this.setState({product:{...this.state.product, mainImage:{...this.state.product.mainImage, zoomImage: data}}}); 
+                }}
+                label="Загрузка увеличенной картинки 1280x1280"/>
+            </Grid>
+            <Grid className="image-uploader" item xs={3}>
+              <ImagesUploader url={URL} optimisticPreviews multiple={false}
+                className="image-uploader"
+                onLoadEnd={(err, data) => {
+                  this.setState({product:{...this.state.product, mainImage:{...this.state.product.mainImage, image: data}}}); 
+                }}
+                label="Загрузка подробной картинки 570x570"/>
+            </Grid>
+            <Grid className="image-uploader" item xs={3}>
+              <ImagesUploader url={URL} optimisticPreviews multiple={false}
+                className="image-uploader"
+                onLoadEnd={(err, data) => {
+                  this.setState({product:{...this.state.product, mainImage:{...this.state.product.mainImage, smallImage: data}}}); 
+                }}
+                label="Загрузка витринной картинки 324x324"/>
+            </Grid>
+            <Grid className="image-uploader" item xs={3}>
+              <ImagesUploader url={URL} optimisticPreviews multiple={false}
+                className="image-uploader"
+                onLoadEnd={(err, data) => {
+                  this.setState({product:{...this.state.product, mainImage:{...this.state.product.mainImage, cartImage: data}}}); 
+                }}
+                label="Загрузка корзинной картинки 82x82"/>
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.handleIsAddOpen} color="primary">
+            Отменить
+          </Button>
+          <Button onClick={this.handleAdd} color="primary">
+            Сохранить
+          </Button>
+        </DialogActions>
+      </Dialog>: null}     
+              <ToastContainer
               position={'bottom-left'}
               autoClose={5000}
               hideProgressBar={false}
@@ -128,6 +473,8 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = {
     fetchProducts,
+    addProduct,
+    editProduct,
     deleteProduct
 }
 

@@ -1,8 +1,7 @@
 import {
-    GET_PRODUCT_SUCCES, GET_PRODUCT_FAILURE,
-    ADD_PRODUCT_SUCCES, ADD_PRODUCT_FAILURE,
-    EDIT_PRODUCT_SUCCES, EDIT_PRODUCT_FAILURE,
-    DELETE_PRODUCT_SUCCES, DELETE_PRODUCT_FAILURE
+    GET_ORDERS_SUCCES, GET_ORDERS_FAILURE,
+    ACCEPT_ORDERS_SUCCES, ACCEPT_ORDERS_FAILURE, 
+    DELETE_ORDERS_SUCCES, DELETE_ORDERS_FAILURE
 } from '../../actionType'
 
 import { toast } from 'react-toastify'
@@ -34,42 +33,31 @@ const toastError = () => {
 }
 
 const initialState = {
-    products: [],
+    orders: [],
     isFetching: false,
     status: Boolean,
     error: ""
 }
 
-function productsReducer(state = initialState, action) {
+function ordersReducer(state = initialState, action) {
     switch (action.type) {
   
-      case GET_PRODUCT_SUCCES:
-        return { ...state, products: action.payload, isFetching: true, status: Boolean } 
-      case GET_PRODUCT_FAILURE:
+      case GET_ORDERS_SUCCES:
+        return { ...state, orders: action.payload, isFetching: true, status: Boolean } 
+      case GET_ORDERS_FAILURE:
           toastError()
         return { ...state, error: action.payload.message, isFetching: false, status: false }
 
-      case ADD_PRODUCT_SUCCES:
-          toastSucces()
-          reloadPage()
+      case ACCEPT_ORDERS_SUCCES:
         return { ...state, status: action.payload }
-      case ADD_PRODUCT_FAILURE:
-          toastError()
+      case ACCEPT_ORDERS_FAILURE:
         return { ...state, error: action.payload.message, status: action.payload }
-
-      case EDIT_PRODUCT_SUCCES:
-          toastSucces()
-          reloadPage()
-        return { ...state, status: action.payload}
-      case EDIT_PRODUCT_FAILURE:
-          toastError()
-        return { ...state, error: action.payload.message, status: action.payload }  
-
-      case DELETE_PRODUCT_SUCCES:
+    
+      case DELETE_ORDERS_SUCCES:
           toastSucces()
           reloadPage()
         return { ...state, status: action.payload }
-      case DELETE_PRODUCT_FAILURE:
+      case DELETE_ORDERS_FAILURE:
           toastError()
         return { ...state, error: action.payload.message, status: action.payload }
 
@@ -79,4 +67,4 @@ function productsReducer(state = initialState, action) {
   }
   
 
-export default productsReducer
+export default ordersReducer

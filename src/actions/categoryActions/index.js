@@ -9,7 +9,6 @@ export const fetchCategories = () => async dispatch => {
 
   try {
     const categories = await fetchCategoriesApi()
-    console.log("ACTION: "+categories)
   
     dispatch({
       type: GET_CATEGORIES_SUCCCES,
@@ -29,7 +28,6 @@ export const addCategorie = (categorie) => async dispatch => {
 
   try {
     const status = await addCategorieApi(categorie)
-    console.log("ACTION: "+status)
   
     dispatch({
       type: ADD_CATEGORIE_SUCCES,
@@ -48,7 +46,6 @@ export const editCategorie = (id, newData) => async dispatch => {
 
   try {
     const status = await editCategorieApi(id, newData)
-    console.log("ACTION: "+status)
   
     dispatch({
       type: EDIT_CATEGORIE_SUCCES,
@@ -67,7 +64,6 @@ export const deleteCategorie = (id) => async dispatch => {
 
   try {
     const status = await deleteCategorieApi(id)
-    console.log("ACTION: "+status.status)
   
     dispatch({
       type: DELETE_CATEGORIE_SUCCES,
