@@ -9,7 +9,7 @@ import { fetchUsers, deleteSelectedUsers } from '../../actions'
  
 class UserTable extends Component {
 
-  componentDidMount(){
+  componentWillMount(){
       this.props.fetchUsers()
   }
 

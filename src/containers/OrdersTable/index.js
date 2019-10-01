@@ -8,7 +8,7 @@ import { fetchOrders, acceptOrder, deleteOrder } from '../../actions'
  
 class OrdersTable extends Component {
 
-  componentDidMount(){
+  componentWillMount(){
       this.props.fetchOrders()
   }
 

@@ -14,7 +14,7 @@ class CategorieTable extends Component {
     categories: this.props.categories
   }
 
-  componentDidMount(){
+  componentWillMount(){
       this.props.fetchCategories()
   }
 

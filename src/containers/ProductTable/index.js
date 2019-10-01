@@ -30,21 +30,14 @@ class ProductTable extends Component {
         isEditOpen: false,
         isAddOpen: false,
         product: {},
+        isAvaible: '',
         editorState: null
     };
 
-    this.handleIsAddOpen = this.handleIsAddOpen.bind(this);
-    this.handleAdd = this.handleAdd.bind(this);
-
-    this.handleIsEditOpen = this.handleIsEditOpen.bind(this);
-    this.handleEdit = this.handleEdit.bind(this);
   }
 
-  change = e => {
-    this.setState({product:{
-      ...this.state.product,
-      [e.target.name]: e.target.value}
-    });
+  changeIsAvaible = e => {
+    this.setState({isAvaible: e.target.value});
   };
 
   onEditorStateChange: Function = (editorState) => {
@@ -54,10 +47,11 @@ class ProductTable extends Component {
   }
 
 
-  handleIsEditOpen(data) {
+  handleIsEditOpen = (data) => {
     if(this.state.isEditOpen === false){
       this.setState({ isEditOpen: true })
       this.setState({ product: data })
+      this.setState({ isAvaible: data.isAvaible })
       const contentBlock = htmlToDraft(data.fullDescription);
       if (contentBlock) {
         const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
@@ -67,11 +61,12 @@ class ProductTable extends Component {
     }
     else{
       this.setState({ product: {} })
+      this.setState({ isAvaible: null })
       this.setState({ isEditOpen: false })
     }
   }
 
-  handleIsAddOpen() {
+  handleIsAddOpen = () => {
     if(this.state.isAddOpen === false){
       this.setState({ isAddOpen: true })
       this.setState({ product: {
@@ -98,25 +93,38 @@ class ProductTable extends Component {
       this.setState({ isAddOpen: false })
   }
 
-  handleEdit(){
+  handleEdit = () => {
     const rawContentState = convertToRaw(this.state.editorState.getCurrentContent());
     const markup = draftToHtml(rawContentState);
     const product = this.state.product
     product.fullDescription = markup
+   
+    product.name = this.inputName.value
+    product.price = this.inputPrice.value
+    product.stockPrice = this.inputStockPrice.value
+    product.description = this.inputDescription.value
+    product.mainImage.alt = this.inputAlt.value
+    product.isAvaible = this.state.isAvaible
 
     this.props.editProduct(this.state.product._id, product)
   }
 
-  handleAdd(){
+  handleAdd = () => {
     const rawContentState = convertToRaw(this.state.editorState.getCurrentContent());
     const markup = draftToHtml(rawContentState);
     const product = this.state.product
     product.fullDescription = markup
+    product.name = this.inputName.value
+    product.price = this.inputPrice.value
+    product.stockPrice = this.inputStockPrice.value
+    product.description = this.inputDescription.value
+    product.mainImage.alt = this.inputAlt.value
+    product.isAvaible = this.state.isAvaible
 
     this.props.addProduct(product)
   }
   
-  handleAddChip(chip){
+  handleAddChip = (chip) => {
     const data = this.state.product.categories
     data.push(chip)
     this.setState({product:{
@@ -125,7 +133,7 @@ class ProductTable extends Component {
     });  
   }
 
-  handleDeleteChip(chip, index){
+  handleDeleteChip = (chip, index) => {
     const data = this.state.product.categories
     data.splice(index, 1)
     this.setState({product:{
@@ -134,12 +142,12 @@ class ProductTable extends Component {
     }); 
   }
 
-  componentDidMount(){
+  componentWillMount(){
       this.props.fetchProducts()
   }
 
   render(){
-    const { editorState, product } = this.state;
+    const { editorState, product, isAvaible } = this.state;
     return(
    <div>
     <MaterialTable
@@ -248,29 +256,29 @@ class ProductTable extends Component {
           </IconButton>
           <TextField name="name" label="Название" variant="outlined"  margin="normal"
           fullWidth
-          value={product.name}
-          onChange={e => this.change(e)}/>
+          defaultValue={product.name}
+          inputRef={inputName => this.inputName = inputName}/>
         </DialogTitle>
         <DialogContent>
           <Grid>
             <TextField name="price" label="Цена в тг" className="price-field" variant="outlined" margin="normal"
-            onChange={e => this.change(e)}
+            inputRef={inputPrice => this.inputPrice = inputPrice}
             type="number"
-            value={product.price}
+            defaultValue={product.price}
             InputProps={{
               endAdornment: <InputAdornment position="end">тг</InputAdornment>,
             }}/>
             <TextField name="stockPrice" label="Скидка в тг" variant="outlined" margin="normal" className="price-field"
-            onChange={e => this.change(e)}
+            inputRef={(inputStockPrice) => this.inputStockPrice = inputStockPrice}
             type="number"
-            value={product.stockPrice}
+            defaultValue={product.stockPrice}
             InputProps={{
               endAdornment: <InputAdornment position="end">тг</InputAdornment>,
             }}/>
             <TextField select className="price-field" variant="outlined" label="Наличие" margin="normal"
             name="isAvaible"
-            value={product.isAvaible}
-            onChange={e => this.change(e)}>
+            onChange={e => this.changeIsAvaible(e)}
+            value={isAvaible}>
             {avaibleList.map(option => (
               <MenuItem key={option} value={option}>
                 {option}
@@ -284,9 +292,9 @@ class ProductTable extends Component {
             placeholder='Напишите категорию и нажмите на enter'/>
             <TextField name="description" label="Описание" multiline variant="outlined" margin="normal"
             rows="5"
-            onChange={e => this.change(e)}
+            inputRef={(inputDescription) => this.inputDescription = inputDescription}
             fullWidth
-            value={product.description}/>
+            defaultValue={product.description}/>
           <Grid className="text-editor">
             <Editor
               editorState={editorState}
@@ -294,10 +302,8 @@ class ProductTable extends Component {
               onEditorStateChange={this.onEditorStateChange}/>
           </Grid>
           <TextField name="alt" label="Имя картинки" fullWidth variant="outlined" margin="normal"
-            onChange={e => {
-              this.setState({product:{...this.state.product, mainImage:{...this.state.product.mainImage, alt: e.target.value}}}); 
-            }}
-            value={product.mainImage.alt}/>
+            inputRef={(inputAlt) => this.inputAlt = inputAlt}
+            defaultValue={product.mainImage.alt}/>
           <Grid className="block-uploader" container spacing={3}>
             <Grid className="image-uploader" item xs={3}>
               <ImagesUploader url={URL} optimisticPreviews multiple={false}
@@ -357,29 +363,29 @@ class ProductTable extends Component {
           </IconButton>
           <TextField name="name" label="Название" variant="outlined"  margin="normal"
           fullWidth
-          value={product.name}
-          onChange={e => this.change(e)}/>
+          defaultValue={product.name}
+          inputRef={(inputName) => this.inputName = inputName}/>
         </DialogTitle>
         <DialogContent>
           <Grid>
             <TextField name="price" label="Цена в тг" className="price-field" variant="outlined" margin="normal"
-            onChange={e => this.change(e)}
+            inputRef={(inputPrice) => this.inputPrice = inputPrice}
             type="number"
-            value={product.price}
+            defaultValue={product.price}
             InputProps={{
               endAdornment: <InputAdornment position="end">тг</InputAdornment>,
             }}/>
             <TextField name="stockPrice" label="Скидка в тг" variant="outlined" margin="normal" className="price-field"
-            onChange={e => this.change(e)}
+            inputRef={(inputStockPrice) => this.inputStockPrice = inputStockPrice}
             type="number"
-            value={product.stockPrice}
+            defa={product.stockPrice}
             InputProps={{
               endAdornment: <InputAdornment position="end">тг</InputAdornment>,
             }}/>
-            <TextField select className="price-field" variant="outlined" label="Наличие" margin="normal"
+             <TextField select className="price-field" variant="outlined" label="Наличие" margin="normal"
             name="isAvaible"
-            value={product.isAvaible}
-            onChange={e => this.change(e)}>
+            onChange={e => this.changeIsAvaible(e)}
+            value={isAvaible}>
             {avaibleList.map(option => (
               <MenuItem key={option} value={option}>
                 {option}
@@ -393,9 +399,9 @@ class ProductTable extends Component {
             placeholder='Напишите категорию и нажмите на enter'/>
             <TextField name="description" label="Описание" multiline variant="outlined" margin="normal"
             rows="5"
-            onChange={e => this.change(e)}
+            inputRef={(inputDescription) => this.inputDescription = inputDescription}
             fullWidth
-            value={product.description}/>
+            defaultValue={product.description}/>
           <Grid className="text-editor">
             <Editor
               editorState={editorState}
@@ -403,10 +409,8 @@ class ProductTable extends Component {
               onEditorStateChange={this.onEditorStateChange}/>
           </Grid>
           <TextField name="alt" label="Имя картинки" fullWidth variant="outlined" margin="normal"
-            onChange={e => {
-              this.setState({product:{...this.state.product, mainImage:{...this.state.product.mainImage, alt: e.target.value}}}); 
-            }}
-            value={product.mainImage.alt}/>
+            inputRef={(inputAlt) => this.inputAlt = inputAlt}
+            defaultValue={product.mainImage.alt}/>
           <Grid className="block-uploader" container spacing={3}>
             <Grid className="image-uploader" item xs={3}>
               <ImagesUploader url={URL} optimisticPreviews multiple={false}

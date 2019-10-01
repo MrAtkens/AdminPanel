@@ -50,7 +50,7 @@ class MailTable extends Component {
     mails: this.props.mails
   }
 
-  componentDidMount(){
+  componentWillMount(){
       this.props.fetchMails() 
   }
 
