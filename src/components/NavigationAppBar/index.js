@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {Link} from 'react-router-dom';
+import { Slide } from 'react-reveal'
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {Badge, Drawer, CssBaseline, AppBar, Toolbar, Typography, Divider, List,
 IconButton, ListItem, ListItemIcon, ListItemText, Avatar} from '@material-ui/core';
@@ -103,21 +104,22 @@ const NavigationAppBar = (props) =>{
           [classes.appBarShift]: open,
         })}
       >
-        <Toolbar>
-          <IconButton    
-            aria-label="Открыть меню"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}>
-            <MenuIcon />
-          </IconButton>
-            <Typography variant="h5" noWrap>
-              <Link className={classes.linkH5} to="/main">
-                Kumdang-2
-              </Link>
-            </Typography>
-        </Toolbar>
-
+        <Slide left duration={1500}>
+          <Toolbar>
+            <IconButton    
+              aria-label="Открыть меню"
+              onClick={handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, open && classes.hide)}>
+              <MenuIcon />
+            </IconButton>
+              <Typography variant="h5" noWrap>
+                <Link className={classes.linkH5} to="/main">
+                  Kumdang-2
+                </Link>
+              </Typography>
+          </Toolbar>
+        </Slide>
       </AppBar>
       <Drawer
         className={classes.drawer}

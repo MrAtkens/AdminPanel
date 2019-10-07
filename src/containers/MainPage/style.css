@@ -1,0 +1,25 @@
+.logo-background{
+    background-color: #D9E1F7;
+    width: 150px;
+    height: 150px;
+    opacity: 0.7;
+    border-radius: 50%;
+    margin-bottom: 25px
+}
+
+.icon-orders{
+    color: #5278DC;
+    margin-top: 30px;
+    font-size: 64pt !important; 
+}
+
+.card-content{
+    position: relative;
+    font-weight: bold;
+    text-align: -webkit-center;
+}
+
+.card-text{
+    color: #9097A7;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
+}

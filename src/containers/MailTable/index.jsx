@@ -1,17 +1,21 @@
 import React,{Component} from 'react'
 import { connect } from 'react-redux'
-import { Slide } from 'react-reveal'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import MaterialTable from 'material-table';
+import { Slide } from 'react-reveal'
 
-import { fetchUsers, deleteSelectedUsers } from '../../actions'
+import { fetchMails, deleteSelectedMails } from '../../actions'
  
-class UserTable extends Component {
+class MailTable extends Component {
+
+  state={
+    mails: this.props.mails
+  }
 
   componentWillMount(){
-      this.props.fetchUsers()
+      this.props.fetchMails() 
   }
 
   render(){
@@ -19,16 +23,29 @@ class UserTable extends Component {
    <div>
     <Slide top duration={1300}>
       <MaterialTable
-          title="Таблица Пользователя"
+          title="Таблица Письм"
           columns={[
-            { title: 'Индекс пользователя', field: '_id', editable: 'never' },
-            { title: 'Имя', field: 'name' },
-            { title: 'Логин', field: 'login' },
+            { title: 'Индекс письма', field: '_id', editable: 'never' },
             { title: 'Email', field: 'email' },
-            { title: 'Телефон', field: 'phone' },
-            { title: 'Город', field: 'city' }
+            { title: 'Имя', field: 'name' },
+            { title: 'Телефон', field: 'phone'},
           ]}
-          data={this.props.users}
+          detailPanel={[
+              {
+                tooltip: 'Показать сообщение',
+                render: rowData => {
+                  return (
+                    <div
+                      style={{
+                        fontSize: 24,
+                        marginLeft: 20,
+                        color: 'black' }}>
+                      {rowData.message} 
+                    </div>
+                  )}
+              }
+          ]}
+          data={this.props.mails}
           options={{
             exportButton: true,
             actionsColumnIndex: -1,
@@ -76,9 +93,9 @@ class UserTable extends Component {
         }}
         actions={[
           {
-              tooltip: 'Удалить всех выбранных пользователей',
+              tooltip: 'Удалить все выбранные письма',
               icon: 'delete',
-              onClick: (evt, ids) => this.props.deleteSelectedUsers(ids)
+              onClick: (evt, ids) => this.props.deleteSelectedMails(ids)
           }
         ]}
         />
@@ -92,7 +109,7 @@ class UserTable extends Component {
      rtl={false}
      pauseOnVisibilityChange
      draggable
-     pauseOnHover/>   
+     pauseOnHover/>  
     </div>
       );
   }
@@ -100,15 +117,15 @@ class UserTable extends Component {
 
 const mapStateToProps = store => {
     return {
-      users: store.usersReducer.users
+        mails: store.mailsRedurcer.mails
     }
   }
 
 const mapDispatchToProps = {
-    fetchUsers,
-    deleteSelectedUsers
+    fetchMails,
+    deleteSelectedMails
 }
 
   export default connect(
     mapStateToProps, mapDispatchToProps
-  )(UserTable)
+  )(MailTable)

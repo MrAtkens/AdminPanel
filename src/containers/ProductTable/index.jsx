@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import { Slide } from 'react-reveal';
 import MaterialTable from 'material-table';
 import ChipInput from 'material-ui-chip-input';
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -40,7 +41,7 @@ class ProductTable extends Component {
     this.setState({isAvaible: e.target.value});
   };
 
-  onEditorStateChange: Function = (editorState) => {
+  onEditorStateChange = (editorState) => {
     this.setState({
       editorState,
     });
@@ -150,99 +151,101 @@ class ProductTable extends Component {
     const { editorState, product, isAvaible } = this.state;
     return(
    <div>
-    <MaterialTable
-        title="Таблица Продуктов"
-        columns={[
-          { title: 'Картинка', field: 'mainImage', render: rowData => <img src={rowData.mainImage.image} alt={rowData.mainImage.alt} style={{width: 100}}/> },
-          { title: 'Индекс продукта', field: '_id', editable: 'never' },
-          { title: 'Имя', field: 'name' },
-          { title: 'Цена', field: 'price' },
-          { title: 'Скидочна цена', field: 'stockPrice' },
-          { title: 'Наличия', field: 'isAvaible' },
-          { title: 'Кол/Купленных', field: 'count'}
-        ]}
-        data={this.props.products}
-        options={{
-          exportButton: true,
-          actionsColumnIndex: -1,
-        }}
-        detailPanel={[
-            {
-              tooltip: 'Показать всю информацию',
-              render: rowData => {
-                return (
-                  <div
-                    style={{
-                      fontSize: 16,
-                      marginLeft: 20,
-                      textAlign: "center",
-                      color: 'black' }}>
-                    {rowData.description} 
-                  </div>
-                )}
-            }
-        ]}
-        localization={{
-          pagination: {
-              labelDisplayedRows: '{от}-{до} из {количество}',
-              labelRowsSelect: 'строк',
-              labelRowsPerPage: 'Строк в страницы',
-              firstTooltip: 'Первая страница',
-              firstAriaLabel: 'Первая страница',
-              previousTooltip: 'Предыдущая страница',
-              nextTooltip: 'Следующая страница',
-              lastTooltip: 'Последняя страница',
-          },
-          toolbar: {
-              nRowsSelected: '{0} строк выбрано',
-              addRemoveColumns: 'Добавить или удалить столбцы',
-              showColumnsTitle: 'Показать столбцы',
-              showColumnsAriaLabel: 'Показать столбцы',
-              exportTitle: 'Экспорт',
-              exportName: 'Экспорт в CSV',
-              searchPlaceholder: 'Поиск',
-              searchTooltip: 'Поиск'
-          },
-          header: {
-              actions: 'Операций'
-          },
-          body: {
-              emptyDataSourceMessage: 'Нет записей для вывода',
-              filterRow: {
-                  filterTooltip: 'Фильтр'
-              },
-              addTooltip: 'Добавить',
-              editTooltip: 'Изменить',
-              deleteTooltip: 'Удалить',
-              editRow: {
-                deleteText: 'Вы уверенны что хотите удалить эту строку',
-                cancelTooltip: 'Отменить',
-                saveTooltip: 'Сохранить'  
-              },
+    <Slide top duration={1300}>
+      <MaterialTable
+          title="Таблица Продуктов"
+          columns={[
+            { title: 'Картинка', field: 'mainImage', render: rowData => <img src={rowData.mainImage.image} alt={rowData.mainImage.alt} style={{width: 100}}/> },
+            { title: 'Индекс продукта', field: '_id', editable: 'never' },
+            { title: 'Имя', field: 'name' },
+            { title: 'Цена', field: 'price' },
+            { title: 'Скидочна цена', field: 'stockPrice' },
+            { title: 'Наличия', field: 'isAvaible' },
+            { title: 'Кол/Купленных', field: 'count'}
+          ]}
+          data={this.props.products}
+          options={{
+            exportButton: true,
+            actionsColumnIndex: -1,
+          }}
+          detailPanel={[
+              {
+                tooltip: 'Показать всю информацию',
+                render: rowData => {
+                  return (
+                    <div
+                      style={{
+                        fontSize: 16,
+                        marginLeft: 20,
+                        textAlign: "center",
+                        color: 'black' }}>
+                      {rowData.description} 
+                    </div>
+                  )}
+              }
+          ]}
+          localization={{
+            pagination: {
+                labelDisplayedRows: '{от}-{до} из {количество}',
+                labelRowsSelect: 'строк',
+                labelRowsPerPage: 'Строк в страницы',
+                firstTooltip: 'Первая страница',
+                firstAriaLabel: 'Первая страница',
+                previousTooltip: 'Предыдущая страница',
+                nextTooltip: 'Следующая страница',
+                lastTooltip: 'Последняя страница',
+            },
+            toolbar: {
+                nRowsSelected: '{0} строк выбрано',
+                addRemoveColumns: 'Добавить или удалить столбцы',
+                showColumnsTitle: 'Показать столбцы',
+                showColumnsAriaLabel: 'Показать столбцы',
+                exportTitle: 'Экспорт',
+                exportName: 'Экспорт в CSV',
+                searchPlaceholder: 'Поиск',
+                searchTooltip: 'Поиск'
+            },
+            header: {
+                actions: 'Операций'
+            },
+            body: {
+                emptyDataSourceMessage: 'Нет записей для вывода',
+                filterRow: {
+                    filterTooltip: 'Фильтр'
+                },
+                addTooltip: 'Добавить',
+                editTooltip: 'Изменить',
+                deleteTooltip: 'Удалить',
+                editRow: {
+                  deleteText: 'Вы уверенны что хотите удалить эту строку',
+                  cancelTooltip: 'Отменить',
+                  saveTooltip: 'Сохранить'  
+                },
 
+            }
+        }}
+        actions={[
+          {
+            icon: 'edit',
+            tooltip: 'Изменить',
+            onClick: (event, rowData) => this.handleIsEditOpen(rowData)
+          },
+          {
+            icon: 'add',
+            tooltip: 'Добавить товар',
+            isFreeAction: true,
+            onClick: (event) => this.handleIsAddOpen()
           }
-      }}
-      actions={[
-        {
-          icon: 'edit',
-          tooltip: 'Изменить',
-          onClick: (event, rowData) => this.handleIsEditOpen(rowData)
-        },
-        {
-          icon: 'add',
-          tooltip: 'Добавить товар',
-          isFreeAction: true,
-          onClick: (event) => this.handleIsAddOpen()
-        }
-      ]}
-      editable={{
-        onRowDelete: (oldData) =>
-          new Promise(resolve => {
-            resolve();
-            this.props.deleteProduct(oldData._id) 
-          })
-      }}
-      />
+        ]}
+        editable={{
+          onRowDelete: (oldData) =>
+            new Promise(resolve => {
+              resolve();
+              this.props.deleteProduct(oldData._id) 
+            })
+        }}
+        />
+    </Slide>
 
       {/* Dialogs and Toasts  */}
       {this.state.isEditOpen ? <Dialog open={this.state.isEditOpen} onClose={this.handleIsEditOpen} aria-labelledby="editor-dialog-title" fullScreen={true}>
@@ -454,16 +457,16 @@ class ProductTable extends Component {
           </Button>
         </DialogActions>
       </Dialog>: null}     
-              <ToastContainer
-              position={'bottom-left'}
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnVisibilityChange
-              draggable
-              pauseOnHover/>   
+      <ToastContainer
+      position={'bottom-left'}
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnVisibilityChange
+      draggable
+      pauseOnHover/>   
     </div>
       );
   }
