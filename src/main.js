@@ -3,9 +3,11 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { NavigationAppBar } from './components'
+import { AccesGrid } from './containers'
+import { adminAccept } from './actions'
 
 import routes from './routes'
-
+import './mainCss.css'
 
 const switchRoutes = (
     <Switch>
@@ -26,12 +28,16 @@ const switchRoutes = (
   );
 
 class Main extends Component{
-
+    componentWillMount(){
+      this.props.adminAccept()
+    }
     render(){
         return(
           <div>
-            <NavigationAppBar mails={this.props.mails}/>
-                <div>{switchRoutes}</div>         
+            {this.props.redirectStatus === true ? (<div>
+              <NavigationAppBar mails={this.props.mails}/>
+                <div>{switchRoutes}</div>   
+            </div>) : (<AccesGrid/>)}                    
           </div>
         );
     }
@@ -39,10 +45,15 @@ class Main extends Component{
 
 const mapStateToProps = store => {
   return {
-      mails: store.mailsRedurcer.mails
+    redirectStatus: store.usersReducer.redirectStatus,
+    mails: store.mailsRedurcer.mails
   }
 }
 
+const mapDispatchToProps = {
+  adminAccept
+}
+
 export default connect(
-  mapStateToProps, null
+  mapStateToProps, mapDispatchToProps
 )(Main)

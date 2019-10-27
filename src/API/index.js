@@ -1,5 +1,5 @@
 export { fetchCategoriesApi, addCategorieApi, editCategorieApi, deleteCategorieApi} from './CategoryApi'
 export { fetchMailsApi, deleteSelectedMailsApi } from './MailsApi'
-export { fetchUserApi, deleteSelectedUsersApi } from './UsersApi'
+export { fetchUserApi, deleteSelectedUsersApi, acceptCodeApi, singInApi, adminAcceptApi } from './UsersApi'
 export { fetchProductsApi, addProductApi, editProductApi, deleteProductApi } from './ProductsApi'
 export { fetchOrdersApi, acceptOrderApi, deleteOrderApi } from './OrdersApi'

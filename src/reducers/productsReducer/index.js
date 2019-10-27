@@ -11,8 +11,8 @@ const reloadPage = () => {
   setTimeout(window.location.reload(), 6000)
 }
 
-const toastSucces = () => {
-  toast.success("Всё прошло успешно", {
+const toastSucces = (text) => {
+  toast.success(text, {
     position: "bottom-left",
     autoClose: 5000,
     hideProgressBar: false,
@@ -22,8 +22,8 @@ const toastSucces = () => {
   });
 }
 
-const toastError = () => {
-  toast.error("Произошла ошибка пожалуйста попробуйте позже" , {
+const toastError = (text) => {
+  toast.error(text , {
     position: "bottom-left",
     autoClose: 5000,
     hideProgressBar: false,
@@ -46,31 +46,31 @@ function productsReducer(state = initialState, action) {
       case GET_PRODUCT_SUCCES:
         return { ...state, products: action.payload, isFetching: true, status: Boolean } 
       case GET_PRODUCT_FAILURE:
-          toastError()
+          toastError("Произошла ошибка пожалуйста попробуйте позже")
         return { ...state, error: action.payload.message, isFetching: false, status: false }
 
       case ADD_PRODUCT_SUCCES:
-          toastSucces()
+          toastSucces("Вы успешно добавили продукт")
           reloadPage()
         return { ...state, status: action.payload }
       case ADD_PRODUCT_FAILURE:
-          toastError()
+          toastError("Произошла ошибка пожалуйста попробуйте позже")
         return { ...state, error: action.payload.message, status: action.payload }
 
       case EDIT_PRODUCT_SUCCES:
-          toastSucces()
+          toastSucces("Продукт редактирован успешно")
           reloadPage()
         return { ...state, status: action.payload}
       case EDIT_PRODUCT_FAILURE:
-          toastError()
+          toastError("Произошла ошибка пожалуйста попробуйте позже")
         return { ...state, error: action.payload.message, status: action.payload }  
 
       case DELETE_PRODUCT_SUCCES:
-          toastSucces()
+          toastSucces("Продукт удалён успешно")
           reloadPage()
         return { ...state, status: action.payload }
       case DELETE_PRODUCT_FAILURE:
-          toastError()
+          toastError("Произошла ошибка пожалуйста попробуйте позже")
         return { ...state, error: action.payload.message, status: action.payload }
 
       default:

@@ -10,8 +10,8 @@ const reloadPage = () => {
   setTimeout(window.location.reload(), 6000)
 }
 
-const toastSucces = () => {
-  toast.success("Всё прошло успешно", {
+const toastSucces = (text) => {
+  toast.success(text, {
     position: "bottom-left",
     autoClose: 5000,
     hideProgressBar: false,
@@ -21,8 +21,8 @@ const toastSucces = () => {
   });
 }
 
-const toastError = () => {
-  toast.error("Произошла ошибка пожалуйста попробуйте позже" , {
+const toastError = (text) => {
+  toast.error(text , {
     position: "bottom-left",
     autoClose: 5000,
     hideProgressBar: false,
@@ -45,20 +45,22 @@ function ordersReducer(state = initialState, action) {
       case GET_ORDERS_SUCCES:
         return { ...state, orders: action.payload, isFetching: true, status: Boolean } 
       case GET_ORDERS_FAILURE:
-          toastError()
+          toastError("Произошла ошибка пожалуйста попробуйте позже")
         return { ...state, error: action.payload.message, isFetching: false, status: false }
 
       case ACCEPT_ORDERS_SUCCES:
+          toastSucces("Заказ подтверждён успешно")
         return { ...state, status: action.payload }
       case ACCEPT_ORDERS_FAILURE:
+          toastError("Произошла ошибка пожалуйста попробуйте позже")
         return { ...state, error: action.payload.message, status: action.payload }
     
       case DELETE_ORDERS_SUCCES:
-          toastSucces()
+          toastSucces("Заказ удалён успешно")
           reloadPage()
         return { ...state, status: action.payload }
       case DELETE_ORDERS_FAILURE:
-          toastError()
+          toastError("Произошла ошибка пожалуйста попробуйте позже")
         return { ...state, error: action.payload.message, status: action.payload }
 
       default:

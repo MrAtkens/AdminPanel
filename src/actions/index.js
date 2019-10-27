@@ -1,5 +1,5 @@
 export { fetchCategories, addCategorie, editCategorie, deleteCategorie } from './categoryActions'
 export { fetchMails, deleteSelectedMails } from './mailActions'
-export { fetchUsers, deleteSelectedUsers } from './userActions'
+export { fetchUsers, singIn, accesPhone, deleteSelectedUsers, adminAccept } from './userActions'
 export { fetchProducts, addProduct, editProduct, deleteProduct } from './productActions'
 export { fetchOrders, acceptOrder, deleteOrder} from './orderActions'

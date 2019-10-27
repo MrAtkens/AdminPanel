@@ -9,8 +9,8 @@ const reloadPage = () => {
   setTimeout(window.location.reload(), 6000)
 }
 
-const toastSucces = () => {
-  toast.success("Всё прошло успешно", {
+const toastSucces = (text) => {
+  toast.success(text, {
     position: "bottom-left",
     autoClose: 5000,
     hideProgressBar: false,
@@ -20,8 +20,8 @@ const toastSucces = () => {
   });
 }
 
-const toastError = () => {
-  toast.error("Произошла ошибка пожалуйста попробуйте позже" , {
+const toastError = (text) => {
+  toast.error(text , {
     position: "bottom-left",
     autoClose: 5000,
     hideProgressBar: false,
@@ -44,15 +44,15 @@ function mailsReducer(state = initialState, action) {
       case GET_MAIL_SUCCES:
         return { ...state, mails: action.payload, isFetching: true, status: Boolean } 
       case GET_MAIL_FAILURE:
-          toastError()
+          toastError("Произошла ошибка пожалуйста попробуйте позже")
         return { ...state, error: action.payload.message, isFetching: false, status: false }
 
       case DELETE_MAIL_SUCCES:
-          toastSucces()
+          toastSucces("Сообщение удалено успешно")
           reloadPage()
         return { ...state, status: action.payload }
       case DELETE_MAIL_FAILURE:
-          toastError()
+          toastError("Произошла ошибка пожалуйста попробуйте позже")
         return { ...state, error: action.payload.message, status: action.payload }
 
       default:

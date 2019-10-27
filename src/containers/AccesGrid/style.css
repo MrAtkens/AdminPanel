@@ -1,0 +1,27 @@
+.cardBlock{
+	margin-top: 10% !important;
+	text-align: center;
+}
+
+.primaryBackGround{
+	background: url("1.jpg") no-repeat;
+	background-size: auto;
+	height: -webkit-fill-available;
+}
+
+.paper{
+	display: grid;
+}
+
+.inputGrid{
+	margin: 40px;
+	display: grid;
+}
+
+.input{
+	margin-bottom: 30px !important;
+}
+
+.header{
+	margin: 0px 20px 40px 20px !important;
+}

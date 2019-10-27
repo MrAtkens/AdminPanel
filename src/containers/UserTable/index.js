@@ -23,9 +23,8 @@ class UserTable extends Component {
           columns={[
             { title: 'Индекс пользователя', field: '_id', editable: 'never' },
             { title: 'Имя', field: 'name' },
-            { title: 'Логин', field: 'login' },
-            { title: 'Email', field: 'email' },
             { title: 'Телефон', field: 'phone' },
+            { title: 'Email', field: 'email' },
             { title: 'Город', field: 'city' }
           ]}
           data={this.props.users}
