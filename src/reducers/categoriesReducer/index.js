@@ -29,10 +29,6 @@ const toastError = (text) => {
   });  
 }
 
-const reloadPage = () => {
-  setTimeout(window.location.reload(), 6000)
-}
-
 const initialState = {
     categories: [],
     isFetching: false,
@@ -47,31 +43,28 @@ function categoriesReducer(state = initialState, action) {
         return { ...state, categories: action.payload, isFetching: true, status: Boolean } 
       case GET_CATEGORIES_FAILURE:
           toastError("Произошла ошибка пожалуйста попробуйте позже")
-        return { ...state, error: action.payload.message, isFetching: false, status: false }
+        return { ...state, error: action.payload.message, isFetching: false, status: Boolean }
 
       case ADD_CATEGORIE_SUCCES:
           toastSucces("Категория добавлена успешно")
-          reloadPage()
-        return { ...state, status: action.payload }
+        return { ...state, status: action.payload.status }
       case ADD_CATEGORIE_FAILURE:
           toastError("Произошла ошибка пожалуйста попробуйте позже")
-        return { ...state, error: action.payload.message, status: action.payload }
+        return { ...state, error: action.payload.message, status: Boolean }
 
       case EDIT_CATEGORIE_SUCCES:
-          toastSucces("Категория редактриванно успешно")
-          reloadPage()
-        return { ...state, status: action.payload }
+          toastSucces("Категория изменина успешно")
+        return { ...state, status: action.payload.status }
       case EDIT_CATEGORIE_FAILURE:
           toastError("Произошла ошибка пожалуйста попробуйте позже")
-        return { ...state, error: action.payload.message, status: action.payload }
+        return { ...state, error: action.payload.message, status: Boolean }
 
       case DELETE_CATEGORIE_SUCCES:
           toastSucces("Категория удалена успешна")
-          reloadPage()
-        return { ...state, status: action.payload }
+        return { ...state, status: action.payload.status }
       case DELETE_CATEGORIE_FAILURE:
           toastError("Произошла ошибка пожалуйста попробуйте позже")
-        return { ...state, error: action.payload.message, status: action.payload }
+        return { ...state, error: action.payload.message, status: Boolean }
 
       default:
         return state

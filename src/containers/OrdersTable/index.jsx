@@ -13,6 +13,15 @@ class OrdersTable extends Component {
       this.props.fetchOrders()
   }
 
+  componentDidUpdate(prevProps) {
+    // Популярный пример (не забудьте сравнить пропсы):
+    if (this.props.status !== prevProps.status) {
+      if(this.props.status === true){
+        this.props.fetchOrders()
+      }
+    }
+  }
+
   render(){
     return(
    <div>
@@ -166,7 +175,8 @@ class OrdersTable extends Component {
 
 const mapStateToProps = store => {
     return {
-        orders: store.ordersReducer.orders
+        orders: store.ordersReducer.orders,
+        status: store.ordersReducer.status
     }
   }
 

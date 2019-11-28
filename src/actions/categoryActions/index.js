@@ -67,7 +67,7 @@ export const deleteCategorie = (id) => async dispatch => {
   
     dispatch({
       type: DELETE_CATEGORIE_SUCCES,
-      payload: status.status
+      payload: status
     })
   } catch (err) {
     dispatch({

@@ -10,9 +10,9 @@ export const fetchUserApi = async () => {
   })
 }
 
-export const acceptCodeApi = async (userPhone) => {
-  return await axios.post(`http://${URL}/acceptPhoneAdmin`, {
-    phone: userPhone}).then(response => {
+export const acceptCodeApi = async (userEmail) => {
+  return await axios.post(`http://${URL}/acceptPhoneMail`, {
+    email: userEmail}).then(response => {
     console.log(response.data)
     return response.data
   })

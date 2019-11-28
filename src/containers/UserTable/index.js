@@ -13,6 +13,16 @@ class UserTable extends Component {
   componentWillMount(){
       this.props.fetchUsers()
   }
+  
+  componentDidUpdate(prevProps) {
+    // Популярный пример (не забудьте сравнить пропсы):
+    if (this.props.status !== prevProps.status) {
+      console.log(this.props.status)
+      if(this.props.status === true){
+        this.props.fetchUsers()
+      }
+    }
+  }
 
   render(){
     return(
@@ -99,7 +109,8 @@ class UserTable extends Component {
 
 const mapStateToProps = store => {
     return {
-      users: store.usersReducer.users
+      users: store.usersReducer.users,
+      status: store.usersReducer.status
     }
   }
 

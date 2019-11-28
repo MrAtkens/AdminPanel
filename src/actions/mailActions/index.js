@@ -26,11 +26,11 @@ export const deleteSelectedMails = (ids) => async dispatch => {
 
   try{
     console.log(ids)
-    const mails = await deleteSelectedMailsApi(ids)
+    const status = await deleteSelectedMailsApi(ids)
   
     dispatch({
       type: DELETE_MAIL_SUCCES,
-      payload: mails
+      payload: status
     })
   } catch (err) {
     dispatch({

@@ -11,7 +11,7 @@ export const fetchMailsApi = async () => {
 }
 
 export const deleteSelectedMailsApi = async (ids) => {
-  return await axios.delete(`http://${URL}/mail`, { mails: ids }).then(response => {
+  return await axios.post(`http://${URL}/mail`, { mails: ids }).then(response => {
     console.log(response.data);
     return response.data;
   });

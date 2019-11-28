@@ -19,6 +19,16 @@ class CategorieTable extends Component {
       this.props.fetchCategories()
   }
 
+  componentDidUpdate(prevProps) {
+    // Популярный пример (не забудьте сравнить пропсы):
+    if (this.props.status !== prevProps.status) {
+      if(this.props.status === true){
+        this.props.fetchCategories()
+      }
+    }
+  }
+
+
   render(){
     return(
    <div>
@@ -111,7 +121,8 @@ class CategorieTable extends Component {
 
 const mapStateToProps = store => {
     return {
-        categories: store.categoriesReducer.categories
+        categories: store.categoriesReducer.categories,
+        status: store.categoriesReducer.status
     }
   }
 

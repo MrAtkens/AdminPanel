@@ -5,10 +5,6 @@ import {
 
 import { toast } from 'react-toastify'
 
-const reloadPage = () => {
-  setTimeout(window.location.reload(), 6000)
-}
-
 const toastSucces = (text) => {
   toast.success(text, {
     position: "bottom-left",
@@ -45,15 +41,14 @@ function mailsReducer(state = initialState, action) {
         return { ...state, mails: action.payload, isFetching: true, status: Boolean } 
       case GET_MAIL_FAILURE:
           toastError("Произошла ошибка пожалуйста попробуйте позже")
-        return { ...state, error: action.payload.message, isFetching: false, status: false }
+        return { ...state, error: action.payload.message, isFetching: false, status: Boolean }
 
       case DELETE_MAIL_SUCCES:
           toastSucces("Сообщение удалено успешно")
-          reloadPage()
-        return { ...state, status: action.payload }
+        return { ...state, status: true }
       case DELETE_MAIL_FAILURE:
           toastError("Произошла ошибка пожалуйста попробуйте позже")
-        return { ...state, error: action.payload.message, status: action.payload }
+        return { ...state, error: action.payload.message, status: Boolean }
 
       default:
         return state

@@ -34,7 +34,19 @@ class ProductTable extends Component {
         isAvaible: '',
         editorState: null
     };
+  }
 
+  componentWillMount(){
+    this.props.fetchProducts()
+  }
+
+  componentDidUpdate(prevProps) {
+    // Популярный пример (не забудьте сравнить пропсы):
+    if (this.props.status !== prevProps.status) {
+      if(this.props.status === true){
+        this.props.fetchProducts()
+      }
+    }
   }
 
   changeIsAvaible = e => {
@@ -141,10 +153,6 @@ class ProductTable extends Component {
       ...this.state.product,
       categories: data}
     }); 
-  }
-
-  componentWillMount(){
-      this.props.fetchProducts()
   }
 
   render(){
@@ -474,7 +482,8 @@ class ProductTable extends Component {
 
 const mapStateToProps = store => {
     return {
-      products: store.productsReducer.products
+      products: store.productsReducer.products,
+      status: store.productsReducer.status
     }
   }
 

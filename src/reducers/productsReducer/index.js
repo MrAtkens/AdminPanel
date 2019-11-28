@@ -7,10 +7,6 @@ import {
 
 import { toast } from 'react-toastify'
 
-const reloadPage = () => {
-  setTimeout(window.location.reload(), 6000)
-}
-
 const toastSucces = (text) => {
   toast.success(text, {
     position: "bottom-left",
@@ -47,31 +43,28 @@ function productsReducer(state = initialState, action) {
         return { ...state, products: action.payload, isFetching: true, status: Boolean } 
       case GET_PRODUCT_FAILURE:
           toastError("Произошла ошибка пожалуйста попробуйте позже")
-        return { ...state, error: action.payload.message, isFetching: false, status: false }
+        return { ...state, error: action.payload.message, isFetching: false, status: Boolean }
 
       case ADD_PRODUCT_SUCCES:
           toastSucces("Вы успешно добавили продукт")
-          reloadPage()
-        return { ...state, status: action.payload }
+        return { ...state, status: action.payload.status }
       case ADD_PRODUCT_FAILURE:
           toastError("Произошла ошибка пожалуйста попробуйте позже")
-        return { ...state, error: action.payload.message, status: action.payload }
+        return { ...state, error: action.payload.message, status: Boolean }
 
       case EDIT_PRODUCT_SUCCES:
           toastSucces("Продукт редактирован успешно")
-          reloadPage()
-        return { ...state, status: action.payload}
+        return { ...state, status: action.payload.status }
       case EDIT_PRODUCT_FAILURE:
           toastError("Произошла ошибка пожалуйста попробуйте позже")
-        return { ...state, error: action.payload.message, status: action.payload }  
+        return { ...state, error: action.payload.message, status: Boolean }  
 
       case DELETE_PRODUCT_SUCCES:
           toastSucces("Продукт удалён успешно")
-          reloadPage()
-        return { ...state, status: action.payload }
+        return { ...state, status: action.payload.status }
       case DELETE_PRODUCT_FAILURE:
           toastError("Произошла ошибка пожалуйста попробуйте позже")
-        return { ...state, error: action.payload.message, status: action.payload }
+        return { ...state, error: action.payload.message, status: Boolean }
 
       default:
         return state

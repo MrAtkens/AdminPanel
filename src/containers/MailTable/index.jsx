@@ -18,6 +18,15 @@ class MailTable extends Component {
       this.props.fetchMails() 
   }
 
+  componentDidUpdate(prevProps) {
+    // Популярный пример (не забудьте сравнить пропсы):
+    if (this.props.status !== prevProps.status) {
+      if(this.props.status === true){
+        this.props.fetchMails()
+      }
+    }
+  }
+
   render(){
     return(
    <div>
@@ -117,7 +126,8 @@ class MailTable extends Component {
 
 const mapStateToProps = store => {
     return {
-        mails: store.mailsRedurcer.mails
+        mails: store.mailsRedurcer.mails,
+        status: store.mailsRedurcer.status
     }
   }
 

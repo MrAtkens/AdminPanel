@@ -25,11 +25,11 @@ export const fetchUsers = () => async dispatch => {
   }
 }
 
-export const accesPhone = (phone, type) => async dispatch => {
+export const getAccesCode = (email) => async dispatch => {
   dispatch({type: GET_ACCES_CODE_START})
 
 try {
-  const data = await acceptCodeApi(phone, type)
+  const data = await acceptCodeApi(email)
   console.log("ACTION: "+data)
 
   dispatch({

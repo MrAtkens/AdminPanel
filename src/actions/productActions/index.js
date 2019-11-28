@@ -27,11 +27,11 @@ export const addProduct = (newProduct) => async dispatch => {
   dispatch({type: ADD_PRODUCT_START})
 
 try {
-  const answer = await addProductApi(newProduct)
+  const status = await addProductApi(newProduct)
 
   dispatch({
     type: ADD_PRODUCT_SUCCES,
-    payload: answer
+    payload: status
   })
 } catch (err) {
   dispatch({
@@ -46,11 +46,11 @@ export const editProduct = (id, newData) => async dispatch => {
   dispatch({type: EDIT_PRODUCT_START})
 
 try {
-  const answer = await editProductApi(id, newData)
+  const status = await editProductApi(id, newData)
 
   dispatch({
     type: EDIT_PRODUCT_SUCCES,
-    payload: answer
+    payload: status
   })
 } catch (err) {
   dispatch({
@@ -69,7 +69,7 @@ export const deleteProduct = (id) => async dispatch => {
   
     dispatch({
       type: DELETE_PRODUCT_SUCCES,
-      payload: status.status
+      payload: status
     })
   } catch (err) {
     dispatch({
