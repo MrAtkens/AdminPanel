@@ -47,11 +47,11 @@ try {
 
 
 
-export const singIn = (phone, code) => async dispatch => {
+export const singIn = (email, code) => async dispatch => {
   dispatch({type: SING_IN_START})
 
 try {
-  const data = await singInApi(phone, code)
+  const data = await singInApi(email, code)
   console.log("ACTION: "+data)
 
   dispatch({

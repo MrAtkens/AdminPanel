@@ -11,16 +11,16 @@ export const fetchUserApi = async () => {
 }
 
 export const acceptCodeApi = async (userEmail) => {
-  return await axios.post(`http://${URL}/acceptPhoneMail`, {
+  return await axios.post(`http://${URL}/acceptAdminMail`, {
     email: userEmail}).then(response => {
     console.log(response.data)
     return response.data
   })
 }
 
-export const singInApi = async (userPhone, userCode) => {
+export const singInApi = async (userEmail, userCode) => {
   return await axios.post(`http://${URL}/singInAdmin`, {
-    phone: userPhone,
+    email: userEmail,
     code: userCode
   }).then(response => {
     console.log(response.data)

@@ -32,13 +32,21 @@ class ProductTable extends Component {
         isAddOpen: false,
         product: {},
         isAvaible: '',
-        editorState: null
+        isPopular: false,
+        editorState: EditorState.createEmpty()
     };
   }
 
   componentWillMount(){
     this.props.fetchProducts()
   }
+
+  onEditorStateChange: Function = (editorState) => {
+    this.setState({
+      editorState,
+    });
+  };
+
 
   componentDidUpdate(prevProps) {
     // Популярный пример (не забудьте сравнить пропсы):
@@ -52,11 +60,9 @@ class ProductTable extends Component {
   changeIsAvaible = e => {
     this.setState({isAvaible: e.target.value});
   };
-
-  onEditorStateChange = (editorState) => {
-    this.setState({
-      editorState,
-    });
+  
+  changeIsPopular = e => {
+    this.setState({isPopular: e.target.value});
   }
 
 
@@ -65,6 +71,7 @@ class ProductTable extends Component {
       this.setState({ isEditOpen: true })
       this.setState({ product: data })
       this.setState({ isAvaible: data.isAvaible })
+      this.setState({ isPopular: data.isPopular })
       const contentBlock = htmlToDraft(data.fullDescription);
       if (contentBlock) {
         const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
@@ -75,6 +82,7 @@ class ProductTable extends Component {
     else{
       this.setState({ product: {} })
       this.setState({ isAvaible: null })
+      this.setState({ isPopular: false })
       this.setState({ isEditOpen: false })
     }
   }
@@ -97,7 +105,8 @@ class ProductTable extends Component {
         price: 0,
         stockPrice: 0,
         isAvaible: '',
-        categories: []
+        categories: [],
+        isPopular: false,
       }})
       const contentState = EditorState.createEmpty()
       this.setState({editorState: contentState})
@@ -118,6 +127,7 @@ class ProductTable extends Component {
     product.description = this.inputDescription.value
     product.mainImage.alt = this.inputAlt.value
     product.isAvaible = this.state.isAvaible
+    product.isPopular = this.state.isPopular
 
     this.props.editProduct(this.state.product._id, product)
   }
@@ -156,7 +166,7 @@ class ProductTable extends Component {
   }
 
   render(){
-    const { editorState, product, isAvaible } = this.state;
+    const { editorState, product, isAvaible, isPopular } = this.state;
     return(
    <div>
     <Slide top duration={1300}>
@@ -169,7 +179,15 @@ class ProductTable extends Component {
             { title: 'Цена', field: 'price' },
             { title: 'Скидочна цена', field: 'stockPrice' },
             { title: 'Наличия', field: 'isAvaible' },
-            { title: 'Кол/Купленных', field: 'count'}
+            { title: 'Кол/Купленных', field: 'count'},
+            { title: 'Популярный', field: 'isPopular', render: rowData => {
+              if(rowData.isPopular){
+                return "В популярных"
+              }
+              else{
+                return "Не в популярных"
+              }
+            }}
           ]}
           data={this.props.products}
           options={{
@@ -266,8 +284,7 @@ class ProductTable extends Component {
             <CancelIcon />
           </IconButton>
           <TextField name="name" label="Название" variant="outlined"  margin="normal"
-          fullWidth
-          defaultValue={product.name}
+          fullWidth defaultValue={product.name}
           inputRef={inputName => this.inputName = inputName}/>
         </DialogTitle>
         <DialogContent>
@@ -296,6 +313,14 @@ class ProductTable extends Component {
               </MenuItem>
             ))}
             </TextField>
+
+            <TextField select className="price-field" variant="outlined" label="Популярность" margin="normal"
+            name="isPopular"
+            onChange={e => this.changeIsPopular(e)}
+            value={isPopular}>
+              <MenuItem value={true}>В популярных</MenuItem>
+              <MenuItem value={false}>Не в популярных</MenuItem>
+            </TextField>
           </Grid>
             <ChipInput value={product.categories} fullWidth label='Категорий' name="categories"
             onAdd={(chip) => this.handleAddChip(chip)}
@@ -309,7 +334,9 @@ class ProductTable extends Component {
           <Grid className="text-editor">
             <Editor
               editorState={editorState}
-              editorClassName="editor-class"
+              wrapperClassName="demo-wrapper"
+              editorClassName="demo-editor"
+              placeholder = "Основное описание здесь можно писать всё что угодно ..."
               onEditorStateChange={this.onEditorStateChange}/>
           </Grid>
           <TextField name="alt" label="Имя картинки" fullWidth variant="outlined" margin="normal"
@@ -403,6 +430,13 @@ class ProductTable extends Component {
               </MenuItem>
             ))}
             </TextField>
+            <TextField select className="price-field" variant="outlined" label="Популярность" margin="normal"
+            name="isPopular"
+            onChange={e => this.changeIsPopular(e)}
+            value={isPopular}>
+              <MenuItem value={true}>В популярных</MenuItem>
+              <MenuItem value={false}>Не в популярных</MenuItem>
+            </TextField>
           </Grid>
             <ChipInput value={product.categories} fullWidth label='Категорий' name="categories"
             onAdd={(chip) => this.handleAddChip(chip)}
@@ -416,7 +450,9 @@ class ProductTable extends Component {
           <Grid className="text-editor">
             <Editor
               editorState={editorState}
-              editorClassName="editor-class"
+              wrapperClassName="demo-wrapper"
+              editorClassName="demo-editor"
+              placeholder="Основное описание здесь можно писать всё что угодно ..."
               onEditorStateChange={this.onEditorStateChange}/>
           </Grid>
           <TextField name="alt" label="Имя картинки" fullWidth variant="outlined" margin="normal"

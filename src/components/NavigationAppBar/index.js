@@ -13,7 +13,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CategoryIcon from '@material-ui/icons/Category';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import ShoppingBasketOutlinedIcon from '@material-ui/icons/ShoppingBasketOutlined';
 
 const drawerWidth = 240;
 
@@ -150,7 +150,7 @@ const NavigationAppBar = (props) =>{
           <Link className={classes.linkList} to="/products">
             <ListItem button>
               <ListItemIcon>
-                <MonetizationOnIcon className={classes.listIcon} /> 
+                <ShoppingBasketOutlinedIcon className={classes.listIcon} /> 
               </ListItemIcon>
               <ListItemText primary={"Product"} />
             </ListItem>
