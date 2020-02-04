@@ -63,6 +63,8 @@ export const DELETE_PRODUCT_START = 'DELETE_PRODUCT_START'
 export const DELETE_PRODUCT_SUCCES = 'DELETE_PRODUCT_SUCCES'
 export const DELETE_PRODUCT_FAILURE = 'DELETE_PRODUCT_FAILURE'
 
+export const PRODUCT_TRANSFER_TO_ANOTHER_PAGE = 'PRODUCT_TRANSFER_TO_ANOTHER_PAGE'
+
 //------------------------------------------------------------ Orders Actions
 export const GET_ORDERS_START = 'GET_ORDERS_START'
 export const GET_ORDERS_SUCCES = 'GET_ORDERS_SUCCES'

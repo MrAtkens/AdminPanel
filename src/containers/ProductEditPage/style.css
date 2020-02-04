@@ -2,6 +2,10 @@ img{
     max-width: max-content;
 }
 
+.textDecNone{
+    text-decoration: none;
+}
+
 /* TextFields classes */
 .text-editor{
     padding: 16px 0px

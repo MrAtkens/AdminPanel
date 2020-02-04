@@ -1,8 +1,29 @@
 import React from 'react';
 import clsx from 'clsx';
+import { Route, Switch, Redirect } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { MainPage } from '../../containers'
+
+import routes from './routes'
+import './mainCss.css'
+
+const switchRoutes = (
+    <Switch>
+      {routes.map((prop, key) => {
+        if (prop.layout === "/") {
+          return (
+            <Route
+              path={prop.layout + prop.path}
+              component={prop.component}
+              key={key}
+            />
+          );
+        }
+        return null;
+      })}
+        <Redirect from="/" to="/main" />
+    </Switch>
+  );
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,7 +53,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function MainGrid() {
+function MainView() {
   const classes = useStyles();
   const [open] = React.useState(false);
 
@@ -46,10 +67,10 @@ function MainGrid() {
         })}>
           
         <div className={classes.drawerHeader} />
-          <MainPage/>
+          {switchRoutes}
       </main>
     </div>
   );
 }
 
-export default MainGrid
+export default MainView

@@ -2,7 +2,8 @@ import { fetchProductsApi, addProductApi, editProductApi, deleteProductApi } fro
 import {GET_PRODUCT_START, GET_PRODUCT_SUCCES, GET_PRODUCT_FAILURE,
 ADD_PRODUCT_START, ADD_PRODUCT_SUCCES, ADD_PRODUCT_FAILURE,
 EDIT_PRODUCT_START, EDIT_PRODUCT_SUCCES, EDIT_PRODUCT_FAILURE,
-DELETE_PRODUCT_START, DELETE_PRODUCT_SUCCES, DELETE_PRODUCT_FAILURE} from '../../actionType'
+DELETE_PRODUCT_START, DELETE_PRODUCT_SUCCES, DELETE_PRODUCT_FAILURE,
+PRODUCT_TRANSFER_TO_ANOTHER_PAGE } from '../../actionType'
 
 export const fetchProducts = () => async dispatch => {
     dispatch({type: GET_PRODUCT_START})
@@ -78,3 +79,11 @@ export const deleteProduct = (id) => async dispatch => {
     })
 }
 }
+
+
+export const transferProductToAnotherPage = (productData) => async dispatch => {
+  dispatch({
+    type: PRODUCT_TRANSFER_TO_ANOTHER_PAGE,
+    payload: productData
+  })
+} 

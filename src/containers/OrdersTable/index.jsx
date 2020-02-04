@@ -9,10 +9,6 @@ import { fetchOrders, acceptOrder, deleteOrder } from '../../actions'
  
 class OrdersTable extends Component {
 
-  componentWillMount(){
-      this.props.fetchOrders()
-  }
-
   componentDidUpdate(prevProps) {
     // Популярный пример (не забудьте сравнить пропсы):
     if (this.props.status !== prevProps.status) {

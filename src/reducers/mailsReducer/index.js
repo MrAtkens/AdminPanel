@@ -3,29 +3,7 @@ import {
     DELETE_MAIL_SUCCES, DELETE_MAIL_FAILURE
 } from '../../actionType'
 
-import { toast } from 'react-toastify'
-
-const toastSucces = (text) => {
-  toast.success(text, {
-    position: "bottom-left",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true
-  });
-}
-
-const toastError = (text) => {
-  toast.error(text , {
-    position: "bottom-left",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true
-  });  
-}
+import { toastSucces, toastError } from '../toast'
 
 const initialState = {
     mails: [],

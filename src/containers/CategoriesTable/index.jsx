@@ -1,64 +1,45 @@
 import React,{Component} from 'react'
 import { connect } from 'react-redux'
+import { Slide } from 'react-reveal'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import MaterialTable from 'material-table';
-import { Slide } from 'react-reveal'
 
-import { fetchMails, deleteSelectedMails } from '../../actions'
+import { fetchCategories, addCategorie, editCategorie, deleteCategorie } from '../../actions'
+
  
-class MailTable extends Component {
+class CategoriesTable extends Component {
 
   state={
-    mails: this.props.mails
-  }
-
-  componentWillMount(){
-      this.props.fetchMails() 
+    categories: this.props.categories
   }
 
   componentDidUpdate(prevProps) {
     // Популярный пример (не забудьте сравнить пропсы):
     if (this.props.status !== prevProps.status) {
       if(this.props.status === true){
-        this.props.fetchMails()
+        this.props.fetchCategories()
       }
     }
   }
+
 
   render(){
     return(
    <div>
     <Slide top duration={1300}>
       <MaterialTable
-          title="Таблица Письм"
+          title="Таблица Категорий"
           columns={[
-            { title: 'Индекс письма', field: '_id', editable: 'never' },
-            { title: 'Email', field: 'email' },
-            { title: 'Имя', field: 'name' },
-            { title: 'Телефон', field: 'phone'},
+            { title: 'Индекс категорий', field: '_id', editable: 'never' },
+            { title: 'Категория', field: 'name' },
+            { title: 'Номер категорий', field: 'idCategorie', type: 'numeric' },
           ]}
-          detailPanel={[
-              {
-                tooltip: 'Показать сообщение',
-                render: rowData => {
-                  return (
-                    <div
-                      style={{
-                        fontSize: 24,
-                        marginLeft: 20,
-                        color: 'black' }}>
-                      {rowData.message} 
-                    </div>
-                  )}
-              }
-          ]}
-          data={this.props.mails}
+          data={this.props.categories}
           options={{
             exportButton: true,
             actionsColumnIndex: -1,
-            selection: true
           }}
           localization={{
             pagination: {
@@ -100,25 +81,35 @@ class MailTable extends Component {
 
             }
         }}
-        actions={[
-          {
-              tooltip: 'Удалить все выбранные письма',
-              icon: 'delete',
-              onClick: (evt, ids) => this.props.deleteSelectedMails(ids)
-          }
-        ]}
+          editable={{
+            onRowAdd: newData =>
+              new Promise(resolve => {
+                resolve();
+                this.props.addCategorie(newData)  
+              }),
+            onRowUpdate: (newData, oldData) =>
+              new Promise(resolve => {
+                resolve();
+                this.props.editCategorie(oldData._id, newData) 
+              }),
+            onRowDelete: (oldData) =>
+              new Promise(resolve => {
+                resolve();
+                this.props.deleteCategorie(oldData._id) 
+              })
+          }}
         />
     </Slide>
     <ToastContainer
-     position={'bottom-left'}
-     autoClose={5000}
-     hideProgressBar={false}
-     newestOnTop={false}
-     closeOnClick
-     rtl={false}
-     pauseOnVisibilityChange
-     draggable
-     pauseOnHover/>  
+    position={'bottom-left'}
+    autoClose={5000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnVisibilityChange
+    draggable
+    pauseOnHover/>   
     </div>
       );
   }
@@ -126,16 +117,18 @@ class MailTable extends Component {
 
 const mapStateToProps = store => {
     return {
-        mails: store.mailsRedurcer.mails,
-        status: store.mailsRedurcer.status
+        categories: store.categoriesReducer.categories,
+        status: store.categoriesReducer.status
     }
   }
 
 const mapDispatchToProps = {
-    fetchMails,
-    deleteSelectedMails
+    fetchCategories,
+    addCategorie,
+    editCategorie,
+    deleteCategorie
 }
 
   export default connect(
     mapStateToProps, mapDispatchToProps
-  )(MailTable)
+  )(CategoriesTable)

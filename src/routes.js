@@ -1,41 +1,53 @@
-import { CategorieGrid, ProductsGrid, MailGrid, UserGrid, OrderGrid, MainGrid } from './views'
+import { MainPage, ProductsTable, OrdersTable, MailsTable, CategoriesTable, UsersTable, ProductEditPage, ProductAddPage} from './containers'
 
 const dashboardRoutes = [
     {
         path: "main",
         layout: "/",
         namme: "Main",
-        component: MainGrid
+        component: MainPage
     },
     {
         path: "categorie",
         layout: "/",
         name: "Categorie",
-        component: CategorieGrid
+        component: CategoriesTable
     },
     { 
         path: "mail", 
         layout: "/",
         name: "Mail",
-        component: MailGrid
+        component: MailsTable
     },
     {
         path: "users",
         layout: "/",
         name: "Users",
-        component: UserGrid
+        component: UsersTable
     },
     {
         path: "products",
         layout: "/",
         name: "Products",
-        component: ProductsGrid
+        component: ProductsTable
     },
     {
         path: "orders",
         layout: "/",
         name: "Orders",
-        component: OrderGrid
+        component: OrdersTable
+    },
+    {
+        path: "productEdit/:id",
+        layout: "/",
+        name: "ProductEditPage",
+        component: ProductEditPage
+    },
+    {
+        path: "productAdd",
+        layout: "/",
+        name: "ProductAddPage",
+        component: ProductAddPage
     }
   ];
   

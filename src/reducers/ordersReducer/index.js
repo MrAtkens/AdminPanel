@@ -4,29 +4,8 @@ import {
     DELETE_ORDERS_SUCCES, DELETE_ORDERS_FAILURE
 } from '../../actionType'
 
-import { toast } from 'react-toastify'
+import { toastSucces, toastError } from '../toast'
 
-const toastSucces = (text) => {
-  toast.success(text, {
-    position: "bottom-left",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true
-  });
-}
-
-const toastError = (text) => {
-  toast.error(text , {
-    position: "bottom-left",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true
-  });  
-}
 
 const initialState = {
     orders: [],
