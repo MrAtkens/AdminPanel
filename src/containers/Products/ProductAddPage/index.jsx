@@ -123,7 +123,7 @@ class ProductAddPage extends Component {
             <TextField name="stockPrice" label="Скидка в тг" variant="outlined" margin="normal" className="price-field"
             inputRef={(inputStockPrice) => this.inputStockPrice = inputStockPrice}
             type="number"
-            defa={product.stockPrice}
+            defaultValue={product.stockPrice}
             InputProps={{
               endAdornment: <InputAdornment position="end">тг</InputAdornment>,
             }}/>

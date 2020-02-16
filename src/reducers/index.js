@@ -4,6 +4,7 @@ import mailsReducer from './mailsReducer'
 import usersReducer from './usersReducer'
 import productsReducer from './productsReducer'
 import ordersReducer from './ordersReducer'
+import newsReducer from './newsReducer'
 
 export const rootReducer = combineReducers({
     categoriesReducer: categoriesReducer,
@@ -11,4 +12,5 @@ export const rootReducer = combineReducers({
     ordersReducer: ordersReducer,
     mailsRedurcer: mailsReducer,
     usersReducer: usersReducer,
+    newsReducer: newsReducer
 })

@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { NavigationAppBar } from './components'
 import { AccesGrid } from './containers'
-import { adminAccept, fetchProducts, fetchOrders, fetchMails, fetchCategories, fetchUsers } from './actions'
+import { adminAccept, fetchProducts, fetchOrders, fetchMails, fetchCategories, fetchUsers, fetchNews } from './actions'
 import MainView from './view';
 
 class Main extends Component{
@@ -17,6 +17,7 @@ class Main extends Component{
       this.props.fetchMails()
       this.props.fetchUsers()
       this.props.fetchCategories()
+      this.props.fetchNews()
     }
 
     render(){
@@ -51,6 +52,7 @@ const mapStateToProps = store => {
 const mapDispatchToProps = {
   adminAccept,
   fetchProducts,
+  fetchNews,
   fetchOrders,
   fetchMails,
   fetchUsers,

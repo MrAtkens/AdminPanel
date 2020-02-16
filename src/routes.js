@@ -1,4 +1,6 @@
-import { MainPage, ProductsTable, OrdersTable, MailsTable, CategoriesTable, UsersTable, ProductEditPage, ProductAddPage} from './containers'
+import { MainPage, OrdersTable, MailsTable, CategoriesTable, UsersTable,
+ProductsTable, ProductEditPage, ProductAddPage,
+NewsTable, NewsEditPage, NewsAddPage} from './containers'
 
 const dashboardRoutes = [
     {
@@ -26,28 +28,46 @@ const dashboardRoutes = [
         component: UsersTable
     },
     {
-        path: "products",
-        layout: "/",
-        name: "Products",
-        component: ProductsTable
-    },
-    {
         path: "orders",
         layout: "/",
         name: "Orders",
         component: OrdersTable
     },
     {
-        path: "productEdit/:id",
+        path: "products",
         layout: "/",
-        name: "ProductEditPage",
-        component: ProductEditPage
+        name: "Products",
+        component: ProductsTable
     },
     {
         path: "productAdd",
         layout: "/",
         name: "ProductAddPage",
         component: ProductAddPage
+    },
+    {
+        path: ":id",
+        layout: "/productEdit/",
+        name: "ProductEditPage",
+        component: ProductEditPage
+    },
+    {
+        path: "news",
+        layout: "/",
+        name: "NewsTable",
+        component: NewsTable
+    },
+    {
+        path: "newsAdd",
+        layour: "/",
+        name: "NewsAdd",
+        component: NewsAddPage
+    },
+    {
+        path: ":id",
+        layout: "/newsEdit/",
+        name: "NewsEditPage",
+        component: NewsEditPage
     }
   ];
   

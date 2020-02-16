@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Slide } from 'react-reveal';
 import MaterialTable from 'material-table';
 
-import { deleteProduct, transferProductToAnotherPage } from '../../actions'
+import { deleteProduct, transferProductToAnotherPage } from '../../../actions'
 
 class ProductsTable extends Component {
 

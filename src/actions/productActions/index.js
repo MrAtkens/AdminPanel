@@ -9,11 +9,11 @@ export const fetchProducts = () => async dispatch => {
     dispatch({type: GET_PRODUCT_START})
 
   try {
-    const categories = await fetchProductsApi()
+    const products = await fetchProductsApi()
   
     dispatch({
       type: GET_PRODUCT_SUCCES,
-      payload: categories
+      payload: products
     })
   } catch (err) {
     dispatch({
