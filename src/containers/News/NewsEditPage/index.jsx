@@ -6,6 +6,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import htmlToDraft from 'html-to-draftjs';
 import draftToHtml from 'draftjs-to-html';
 import ImagesUploader from 'react-images-uploader';
+import DateFnsUtils from '@date-io/date-fns';
 import 'react-images-uploader/styles.css';
 import 'react-images-uploader/font.css';
 import { Button, Dialog, DialogActions, DialogTitle, TextField, DialogContent, Grid } from '@material-ui/core';
@@ -14,6 +15,8 @@ import { Editor } from 'react-draft-wysiwyg';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './style.css';
+
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
 
 import { editNews } from '../../../actions'
 
@@ -79,14 +82,25 @@ class NewsEditPage extends Component {
             type="number"
             defaultValue={news.priority} />
 
-            <TextField name="title" label="Загаловак" rows="6" variant="outlined" margin="normal" className="price-field"
+            <TextField name="description" label="Заголовак" multiline variant="outlined" margin="normal"
+            rows="5"
             inputRef={(inputTitle) => this.inputTitle = inputTitle}
-            defaultValue={news.title} />
+            fullWidth
+            defaultValue={news.title}/>
 
-            <TextField name="creationDate" label="Дата публикаций" variant="outlined" margin="normal" className="price-field"
-            inputRef={(inputDate) => this.inputDate = inputDate}
-            type="date-local"
-            defaultValue={news.creationDate} />
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+              margin="normal"
+              id="date-picker-dialog"
+              label="Дата публикаций"
+              format="MM/dd/yyyy"
+              inputRef={(inputDate) => this.inputDate = inputDate}
+              KeyboardButtonProps={{
+                'aria-label': 'Дата публикаций',
+              }}/>
+            </MuiPickersUtilsProvider>
+
+            
           </Grid>
 
           <Grid className="text-editor">
@@ -94,7 +108,7 @@ class NewsEditPage extends Component {
               editorState={editorState}
               wrapperClassName="wrapper-class"
               editorClassName="editor-class"
-              placeholder = "Основное описание здесь можно писать всё что угодно ..."
+              placeholder = "Основное текст статьи, здесь можно писать всё что угодно ..."
               onEditorStateChange={this.onEditorStateChange}/>
           </Grid>
 
@@ -106,9 +120,9 @@ class NewsEditPage extends Component {
               <ImagesUploader url={URL} optimisticPreviews multiple={false}
                 image={this.state.news.titleImage}
                 onLoadEnd={(err, data) => {
-                  this.setState({news:{...this.state.news, titleImage: this.state.titleImage}}); 
+                  this.setState({news:{...this.state.news, titleImage: data}}); 
                 }}
-                label="Загрузка увеличенной картинки 1280x1280"/>
+                label="Загрузка картинки рекомендуемые размеры 1000x700"/>
             </Grid>
           </Grid>
 

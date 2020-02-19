@@ -115,7 +115,7 @@ const mapStateToProps = store => {
         ordersCount: store.ordersReducer.orders.length,
         usersCount: store.usersReducer.users.length,
         categoriesCount: store.categoriesReducer.categories.length,
-        productsCount: store.productsReducer.products.length
+        productsCount: store.productsReducer.products.length,
     }
   }
 

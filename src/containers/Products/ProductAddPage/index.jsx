@@ -15,8 +15,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './style.css';
 
-import { addProduct } from '../../actions'
-import avaibleList from '../avaibilityList'
+import { addProduct } from '../../../actions'
+import avaibleList from '../../avaibilityList'
 
 const URL = 'http://localhost:3444/notmultiple'
 

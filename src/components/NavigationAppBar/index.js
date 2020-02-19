@@ -13,6 +13,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CategoryIcon from '@material-ui/icons/Category';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import ShoppingBasketOutlinedIcon from '@material-ui/icons/ShoppingBasketOutlined';
 
 const drawerWidth = 240;
@@ -144,7 +145,7 @@ const NavigationAppBar = (props) =>{
               <ListItemIcon> 
                 <CategoryIcon className={classes.listIcon} />
               </ListItemIcon>
-              <ListItemText primary={"Category"} ></ListItemText>
+              <ListItemText primary={"Categories"} ></ListItemText>
             </ListItem>
           </Link>
           <Link className={classes.linkList} to="/products">
@@ -152,7 +153,15 @@ const NavigationAppBar = (props) =>{
               <ListItemIcon>
                 <ShoppingBasketOutlinedIcon className={classes.listIcon} /> 
               </ListItemIcon>
-              <ListItemText primary={"Product"} />
+              <ListItemText primary={"Products"} />
+            </ListItem>
+          </Link>
+          <Link className={classes.linkList} to="/news">
+            <ListItem button>
+              <ListItemIcon>
+                <LibraryBooksIcon className={classes.listIcon} /> 
+              </ListItemIcon>
+              <ListItemText primary={"News"} />
             </ListItem>
           </Link>
           <Link className={classes.linkList} to="/mail">
@@ -162,7 +171,7 @@ const NavigationAppBar = (props) =>{
                 <MailIcon className={classes.listIcon} />
               </Badge> 
               </ListItemIcon>
-              <ListItemText primary={"Mail"} />
+              <ListItemText primary={"Mails"} />
             </ListItem>
           </Link>
           <Link className={classes.linkList} to="/users">
@@ -170,7 +179,7 @@ const NavigationAppBar = (props) =>{
               <ListItemIcon> 
                 <AccountCircleIcon className={classes.listIcon} /> 
               </ListItemIcon>
-              <ListItemText primary={"Accounts"} />
+              <ListItemText primary={"Users"} />
             </ListItem>
           </Link>
           <Link className={classes.linkList} to="/orders">

@@ -59,7 +59,7 @@ const dashboardRoutes = [
     },
     {
         path: "newsAdd",
-        layour: "/",
+        layout: "/",
         name: "NewsAdd",
         component: NewsAddPage
     },
