@@ -1,9 +1,9 @@
 import {
   GET_NEWS_SUCCES, GET_NEWS_FAILURE,
+  GET_NEWS_BY_ID_SUCCES, GET_NEWS_BY_ID_FAILURE,
   ADD_NEWS_SUCCES, ADD_NEWS_FAILURE,
   EDIT_NEWS_SUCCES, EDIT_NEWS_FAILURE,
   DELETE_NEWS_SUCCES, DELETE_NEWS_FAILURE,
-  NEWS_TRANSFER_TO_ANOTHER_PAGE
 } from '../../actionType'
 
 import { toastSucces, toastError } from '../toast'
@@ -24,6 +24,12 @@ function newsReducer(state = initialState, action) {
     case GET_NEWS_FAILURE:
         toastError("Произошла ошибка пожалуйста попробуйте позже")
       return { ...state, error: action.payload.message, isFetching: false, status: Boolean }
+
+    case GET_NEWS_BY_ID_SUCCES:
+      return { ...state, blog: action.payload, status: true } 
+    case GET_NEWS_BY_ID_FAILURE:
+        toastError("Произошла ошибка пожалуйста попробуйте позже")
+      return { ...state, error: action.payload.message }
 
     case ADD_NEWS_SUCCES:
         toastSucces("Вы успешно добавили статью")
@@ -48,9 +54,6 @@ function newsReducer(state = initialState, action) {
     case DELETE_NEWS_FAILURE:
         toastError("Произошла ошибка пожалуйста попробуйте позже")
       return { ...state, error: action.payload.message, status: Boolean }
-
-    case NEWS_TRANSFER_TO_ANOTHER_PAGE:
-      return { ...state, news: action.payload}
 
     default:
       return state

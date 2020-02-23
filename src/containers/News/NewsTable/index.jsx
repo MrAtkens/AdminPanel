@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Slide } from 'react-reveal';
 import MaterialTable from 'material-table';
 
-import { deleteNews, transferNewsToAnotherPage } from '../../../actions'
+import { deleteNews } from '../../../actions'
 
 class NewsTable extends Component {
 
@@ -14,7 +14,6 @@ class NewsTable extends Component {
   }
 
   editNews = (data) => {
-    this.props.transferNewsToAnotherPage(data);
     this.setState({redirectToNewsEditId: data._id})
   }
 
@@ -137,8 +136,7 @@ const mapStateToProps = store => {
   }
 
 const mapDispatchToProps = {
-    deleteNews,
-    transferNewsToAnotherPage
+    deleteNews
 }
 
   export default connect(

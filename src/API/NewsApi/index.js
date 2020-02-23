@@ -10,6 +10,13 @@ export const fetchNewsApi = async () => {
     })
 }
 
+export const fetchNewsByIdApi = async (id) => {
+  return await axios.get(`http://${URL}/news/${id}`).then(response => {
+      console.log(response.data);
+      return response.data;
+  })
+}
+
 export const addNewsApi = async (newNews) => {
   console.log(newNews)
   return await axios.post(`http://${URL}/news/add`, {

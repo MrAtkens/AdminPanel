@@ -1,9 +1,9 @@
 import {
   GET_PRODUCT_SUCCES, GET_PRODUCT_FAILURE,
+  GET_PRODUCT_BY_ID_SUCCES, GET_PRODUCT_BY_ID_FAILURE,
   ADD_PRODUCT_SUCCES, ADD_PRODUCT_FAILURE,
   EDIT_PRODUCT_SUCCES, EDIT_PRODUCT_FAILURE,
-  DELETE_PRODUCT_SUCCES, DELETE_PRODUCT_FAILURE,
-  PRODUCT_TRANSFER_TO_ANOTHER_PAGE
+  DELETE_PRODUCT_SUCCES, DELETE_PRODUCT_FAILURE
 } from '../../actionType'
 
 import { toastSucces, toastError } from '../toast'
@@ -24,6 +24,12 @@ function productsReducer(state = initialState, action) {
     case GET_PRODUCT_FAILURE:
         toastError("Произошла ошибка пожалуйста попробуйте позже")
       return { ...state, error: action.payload.message, isFetching: false, status: Boolean }
+
+    case GET_PRODUCT_BY_ID_SUCCES:
+      return { ...state, product: action.payload, status: true }
+    case GET_PRODUCT_BY_ID_FAILURE:
+      toastError("Произошла ошибка пожалуйста попробуйте позже")
+      return { ...state, error: action.payload.message }
 
     case ADD_PRODUCT_SUCCES:
         toastSucces("Вы успешно добавили продукт")
@@ -48,9 +54,6 @@ function productsReducer(state = initialState, action) {
     case DELETE_PRODUCT_FAILURE:
         toastError("Произошла ошибка пожалуйста попробуйте позже")
       return { ...state, error: action.payload.message, status: Boolean }
-
-    case PRODUCT_TRANSFER_TO_ANOTHER_PAGE:
-      return { ...state, product: action.payload}
 
     default:
       return state

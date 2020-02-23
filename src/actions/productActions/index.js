@@ -1,9 +1,10 @@
-import { fetchProductsApi, addProductApi, editProductApi, deleteProductApi } from '../../API'
+import { fetchProductsApi, fetchProductByIdApi, addProductApi, editProductApi, deleteProductApi } from '../../API'
 import {GET_PRODUCT_START, GET_PRODUCT_SUCCES, GET_PRODUCT_FAILURE,
+GET_PRODUCT_BY_ID_START, GET_PRODUCT_BY_ID_SUCCES, GET_PRODUCT_BY_ID_FAILURE,
 ADD_PRODUCT_START, ADD_PRODUCT_SUCCES, ADD_PRODUCT_FAILURE,
 EDIT_PRODUCT_START, EDIT_PRODUCT_SUCCES, EDIT_PRODUCT_FAILURE,
-DELETE_PRODUCT_START, DELETE_PRODUCT_SUCCES, DELETE_PRODUCT_FAILURE,
-PRODUCT_TRANSFER_TO_ANOTHER_PAGE } from '../../actionType'
+DELETE_PRODUCT_START, DELETE_PRODUCT_SUCCES, DELETE_PRODUCT_FAILURE
+ } from '../../actionType'
 
 export const fetchProducts = () => async dispatch => {
     dispatch({type: GET_PRODUCT_START})
@@ -23,6 +24,26 @@ export const fetchProducts = () => async dispatch => {
     })
   }
 }
+
+
+export const fetchProductById = (id) => async dispatch => {
+  dispatch({type: GET_PRODUCT_BY_ID_START})
+
+try {
+  const product = await fetchProductByIdApi(id)
+  dispatch({
+    type: GET_PRODUCT_BY_ID_SUCCES,
+    payload: product
+  })
+} catch (err) {
+  dispatch({
+    type: GET_PRODUCT_BY_ID_FAILURE,
+    payload: err,
+    error: true
+  })
+}
+}
+
 
 export const addProduct = (newProduct) => async dispatch => {
   dispatch({type: ADD_PRODUCT_START})
@@ -79,11 +100,3 @@ export const deleteProduct = (id) => async dispatch => {
     })
 }
 }
-
-
-export const transferProductToAnotherPage = (productData) => async dispatch => {
-  dispatch({
-    type: PRODUCT_TRANSFER_TO_ANOTHER_PAGE,
-    payload: productData
-  })
-} 

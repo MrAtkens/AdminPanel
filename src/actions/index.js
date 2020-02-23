@@ -1,6 +1,6 @@
 export { fetchCategories, addCategorie, editCategorie, deleteCategorie } from './categoryActions'
 export { fetchMails, deleteSelectedMails } from './mailActions'
 export { fetchUsers, singIn, getAccesCode, deleteSelectedUsers, adminAccept } from './userActions'
-export { fetchProducts, addProduct, editProduct, deleteProduct, transferProductToAnotherPage } from './productActions'
+export { fetchProducts, fetchProductById, addProduct, editProduct, deleteProduct } from './productActions'
 export { fetchOrders, acceptOrder, deleteOrder} from './orderActions'
-export { fetchNews, addNews, editNews, deleteNews, transferNewsToAnotherPage } from './newsActions'
+export { fetchNews, fetchNewsById, addNews, editNews, deleteNews } from './newsActions'

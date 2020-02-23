@@ -46,8 +46,8 @@ const dashboardRoutes = [
         component: ProductAddPage
     },
     {
-        path: ":id",
-        layout: "/productEdit/",
+        path: "productEdit/:id",
+        layout: "/",
         name: "ProductEditPage",
         component: ProductEditPage
     },
@@ -64,8 +64,8 @@ const dashboardRoutes = [
         component: NewsAddPage
     },
     {
-        path: ":id",
-        layout: "/newsEdit/",
+        path: "newsEdit/:id",
+        layout: "/",
         name: "NewsEditPage",
         component: NewsEditPage
     }

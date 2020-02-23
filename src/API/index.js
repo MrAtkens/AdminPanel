@@ -1,6 +1,6 @@
 export { fetchCategoriesApi, addCategorieApi, editCategorieApi, deleteCategorieApi} from './CategoryApi'
 export { fetchMailsApi, deleteSelectedMailsApi } from './MailsApi'
 export { fetchUserApi, deleteSelectedUsersApi, acceptCodeApi, singInApi, adminAcceptApi } from './UsersApi'
-export { fetchProductsApi, addProductApi, editProductApi, deleteProductApi } from './ProductsApi'
+export { fetchProductsApi, fetchProductByIdApi, addProductApi, editProductApi, deleteProductApi } from './ProductsApi'
 export { fetchOrdersApi, acceptOrderApi, deleteOrderApi } from './OrdersApi'
-export { fetchNewsApi, addNewsApi, editNewsApi, deleteNewsApi} from './NewsApi'
+export { fetchNewsApi, fetchNewsByIdApi, addNewsApi, editNewsApi, deleteNewsApi} from './NewsApi'

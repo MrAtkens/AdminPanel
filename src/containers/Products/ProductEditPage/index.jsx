@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Slide } from 'react-reveal';
+import { Fade } from 'react-reveal';
 import ChipInput from 'material-ui-chip-input';
 import CancelIcon from '@material-ui/icons/Cancel';
 import htmlToDraft from 'html-to-draftjs';
@@ -9,34 +9,40 @@ import draftToHtml from 'draftjs-to-html';
 import ImagesUploader from 'react-images-uploader';
 import 'react-images-uploader/styles.css';
 import 'react-images-uploader/font.css';
-import { Button, Dialog, DialogActions, DialogTitle, TextField, DialogContent, InputAdornment, MenuItem, Grid } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogTitle, TextField, DialogContent, InputAdornment, MenuItem, Grid, CircularProgress } from '@material-ui/core';
 import { EditorState, ContentState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './style.css';
 
-import { editProduct } from '../../../actions'
+import { editProduct, fetchProductById } from '../../../actions'
 import avaibleList from '../../avaibilityList'
 
 const URL = 'http://localhost:3444/notmultiple'
 
-
-
 class ProductEditPage extends Component {
 
    state = {
-        product: this.props.product,
-        isAvaible: this.props.product.isAvaible,
-        isPopular: this.props.product.isPopular,
+        product: {},
+        isAvaible: '',
+        isPopular: '',
         editorState: EditorState.createEmpty()
     };
 
   componentDidMount(){
-    const contentBlock = htmlToDraft(this.props.product.fullDescription);
-    const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-    const data = EditorState.createWithContent(contentState);
-    this.setState({editorState: data});
+    const url = window.location.href
+    const id = url.substring(34)
+    this.props.fetchProductById(id)
+  }
+
+  componentDidUpdate(prevProps){
+    if(this.props.product !== prevProps.product){
+      const contentBlock = htmlToDraft(this.props.product.fullDescription);
+      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+      const data = EditorState.createWithContent(contentState);
+      this.setState({editorState: data, product: this.props.product, isAvaible: this.props.product.isAvaible, isPopular: this.props.product.isPopular});
+    }
   }
 
   onEditorStateChange = (editorState) => {
@@ -56,7 +62,7 @@ class ProductEditPage extends Component {
   handleEdit = () => {
     const rawContentState = convertToRaw(this.state.editorState.getCurrentContent());
     const markup = draftToHtml(rawContentState);
-    const product = this.state.product
+    let product = this.state.product
     product.fullDescription = markup
    
     product.name = this.inputName.value
@@ -67,7 +73,7 @@ class ProductEditPage extends Component {
     product.isAvaible = this.state.isAvaible
     product.isPopular = this.state.isPopular
 
-    this.props.editProduct(this.state.product._id, product)
+    this.props.editProduct(this.props.product._id, product)
   }
   
   handleAddChip = (chip) => {
@@ -89,10 +95,16 @@ class ProductEditPage extends Component {
   }
 
   render(){
-    const { editorState, product, isAvaible, isPopular } = this.state;
+    const { product } = this.props;
+    const { editorState } = this.state;
+    console.log(product)
+    if(this.props.status === Boolean){
+      return (
+        <CircularProgress style={{position: "absolute", right: "50%", bottom: "50%"}}/>
+      );
+    }
     return(
-   <div>
-    <Slide top duration={1300}>
+    <Fade>
     <Dialog open={true} aria-labelledby="editor-dialog-title" fullScreen={true}>
     <DialogTitle>
             <Link to="/products" className={'textDecNone'}>
@@ -121,7 +133,7 @@ class ProductEditPage extends Component {
             <TextField select className="price-field" variant="outlined" label="Наличие" margin="normal"
             name="isAvaible"
             onChange={e => this.changeIsAvaible(e)}
-            value={isAvaible}>
+            value={product.isAvaible}>
             {avaibleList.map(option => (
               <MenuItem key={option} value={option}>
                 {option}
@@ -132,7 +144,7 @@ class ProductEditPage extends Component {
             <TextField select className="price-field" variant="outlined" label="Популярность" margin="normal"
             name="isPopular"
             onChange={e => this.changeIsPopular(e)}
-            value={isPopular}>
+            value={product.isPopular}>
               <MenuItem value={true}>В популярных</MenuItem>
               <MenuItem value={false}>Не в популярных</MenuItem>
             </TextField>
@@ -160,7 +172,7 @@ class ProductEditPage extends Component {
           <Grid className="block-uploader" container spacing={3}>
             <Grid className="image-uploader" item xs={3}>
               <ImagesUploader url={URL} optimisticPreviews multiple={false}
-                image={this.state.product.mainImage.zoomImage}
+                image={product.mainImage.zoomImage}
                 onLoadEnd={(err, data) => {
                   this.setState({product:{...this.state.product, mainImage:{...this.state.product.mainImage, zoomImage: data}}}); 
                 }}
@@ -168,7 +180,7 @@ class ProductEditPage extends Component {
             </Grid>
             <Grid className="image-uploader" item xs={3}>
               <ImagesUploader url={URL} optimisticPreviews multiple={false}
-                image={this.state.product.mainImage.image}
+                image={product.mainImage.image}
                 className="image-uploader"
                 onLoadEnd={(err, data) => {
                   this.setState({product:{...this.state.product, mainImage:{...this.state.product.mainImage, image: data}}}); 
@@ -177,7 +189,7 @@ class ProductEditPage extends Component {
             </Grid>
             <Grid className="image-uploader" item xs={3}>
               <ImagesUploader url={URL} optimisticPreviews multiple={false}
-                image={this.state.product.mainImage.smallImage}
+                image={product.mainImage.smallImage}
                 className="image-uploader"
                 onLoadEnd={(err, data) => {
                   this.setState({product:{...this.state.product, mainImage:{...this.state.product.mainImage, smallImage: data}}}); 
@@ -186,7 +198,7 @@ class ProductEditPage extends Component {
             </Grid>
             <Grid className="image-uploader" item xs={3}>
               <ImagesUploader url={URL} optimisticPreviews multiple={false}
-                image={this.state.product.mainImage.cartImage}
+                image={product.mainImage.cartImage}
                 className="image-uploader"
                 onLoadEnd={(err, data) => {
                   this.setState({product:{...this.state.product, mainImage:{...this.state.product.mainImage, cartImage: data}}}); 
@@ -206,8 +218,7 @@ class ProductEditPage extends Component {
           </Button>
         </DialogActions>
       </Dialog>  
-    </Slide>
-    </div>
+    </Fade>
       );
   }
 }
@@ -221,6 +232,7 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = {
     editProduct,
+    fetchProductById
 }
 
   export default connect(

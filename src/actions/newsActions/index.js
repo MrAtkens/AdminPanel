@@ -1,9 +1,10 @@
-import { fetchNewsApi, addNewsApi, editNewsApi, deleteNewsApi } from '../../API'
+import { fetchNewsApi, fetchNewsByIdApi, addNewsApi, editNewsApi, deleteNewsApi } from '../../API'
 import {GET_NEWS_START, GET_NEWS_SUCCES, GET_NEWS_FAILURE,
+GET_NEWS_BY_ID_START, GET_NEWS_BY_ID_SUCCES, GET_NEWS_BY_ID_FAILURE,
 ADD_NEWS_START, ADD_NEWS_SUCCES, ADD_NEWS_FAILURE,
 EDIT_NEWS_START, EDIT_NEWS_SUCCES, EDIT_NEWS_FAILURE,
-DELETE_NEWS_START, DELETE_NEWS_SUCCES, DELETE_NEWS_FAILURE,
-NEWS_TRANSFER_TO_ANOTHER_PAGE } from '../../actionType'
+DELETE_NEWS_START, DELETE_NEWS_SUCCES, DELETE_NEWS_FAILURE
+ } from '../../actionType'
 
 export const fetchNews = () => async dispatch => {
     dispatch({type: GET_NEWS_START})
@@ -22,6 +23,25 @@ export const fetchNews = () => async dispatch => {
       error: true
     })
   }
+}
+
+export const fetchNewsById = (id) => async dispatch => {
+  dispatch({type: GET_NEWS_BY_ID_START})
+
+try {
+  const blog = await fetchNewsByIdApi(id)
+
+  dispatch({
+    type: GET_NEWS_BY_ID_SUCCES,
+    payload: blog
+  })
+} catch (err) {
+  dispatch({
+    type: GET_NEWS_BY_ID_FAILURE,
+    payload: err,
+    error: true
+  })
+}
 }
 
 export const addNews = (newNews) => async dispatch => {
@@ -79,11 +99,4 @@ export const deleteNews = (id) => async dispatch => {
     })
 }
 }
-
-
-export const transferNewsToAnotherPage = (productData) => async dispatch => {
-  dispatch({
-    type: NEWS_TRANSFER_TO_ANOTHER_PAGE,
-    payload: productData
-  })
-} 
+ 

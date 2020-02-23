@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Slide } from 'react-reveal';
 import MaterialTable from 'material-table';
 
-import { deleteProduct, transferProductToAnotherPage } from '../../../actions'
+import { deleteProduct } from '../../../actions'
 
 class ProductsTable extends Component {
 
@@ -14,7 +14,6 @@ class ProductsTable extends Component {
   }
 
   editProduct = (data) => {
-    this.props.transferProductToAnotherPage(data);
     this.setState({redirectToProductEditId: data._id})
   }
 
@@ -24,10 +23,10 @@ class ProductsTable extends Component {
 
   render(){
     if(this.state.redirectToProductEditId !== ""){
-      return (<Redirect to={`productEdit/${this.state.redirectToProductEditId}`}/>)
+      return (<Redirect to={`/productEdit/${this.state.redirectToProductEditId}`}/>)
     }
     if(this.state.redirectToProductAddId === true){
-      return(<Redirect to={`productAdd`}/>)
+      return(<Redirect to={`/productAdd`}/>)
     }
     return(
    <div>
@@ -147,8 +146,7 @@ const mapStateToProps = store => {
   }
 
 const mapDispatchToProps = {
-    deleteProduct,
-    transferProductToAnotherPage
+    deleteProduct
 }
 
   export default connect(

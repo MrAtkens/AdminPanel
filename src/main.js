@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { ToastContainer } from 'react-toastify';
 import { connect } from 'react-redux'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -21,6 +22,9 @@ class Main extends Component{
     }
 
     render(){
+        if(this.props.redirectStatus === Boolean){
+            return (<CircularProgress style={{position: "absolute", right: "50%", bottom: "50%"}}/>)
+        }
         return(
           <div>
             {this.props.redirectStatus === true ? (<div>
